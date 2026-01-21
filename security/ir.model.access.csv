@@ -1,2 +1,4 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_biblioteca_gestion_biblioteca_gestion,biblioteca_gestion.biblioteca_gestion,model_biblioteca_gestion_biblioteca_gestion,base.group_user,1,1,1,1
+access_libro_libro,libro.libro,model_libro_libro,base.group_user,1,1,1,1
+access_libro_autor,libro.autor,model_libro_autor,base.group_user,1,1,1,1
+access_libro_prestamo,libro.prestamo,model_libro_prestamo,base.group_user,1,1,1,1

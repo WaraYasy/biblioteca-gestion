@@ -1,0 +1,44 @@
+# -*- coding: utf-8 -*-
+
+from odoo import models, fields
+
+
+class Autor(models.Model):
+    """
+    Modelo para gestionar los autores de la biblioteca.
+    Almacena información personal del autor y la lista de sus libros.
+    """
+    _name = 'libro.autor'
+    _description = 'Autor de libros'
+
+    # --- Datos personales del autor ---
+    name = fields.Char(
+        string='Nombre y apellidos',
+        required=True,
+        help='Nombre completo del autor'
+    )
+
+    fecha_nacimiento = fields.Date(
+        string='Fecha de nacimiento',
+        required=True,
+        help='Fecha de nacimiento del autor'
+    )
+
+    nacionalidad = fields.Char(
+        string='Nacionalidad',
+        help='País de origen del autor'
+    )
+
+    biografia = fields.Text(
+        string='Biografía',
+        help='Información biográfica del autor'
+    )
+
+    # --- Relación inversa con libros ---
+    # One2many: Un autor puede tener muchos libros
+    lista_libros = fields.One2many(
+        comodel_name='libro.libro',
+        inverse_name='autor_id',
+        string='Libros escritos',
+        help='Lista de libros escritos por este autor'
+    )
