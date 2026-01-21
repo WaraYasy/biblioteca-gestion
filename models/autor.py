@@ -12,8 +12,8 @@ class Autor(models.Model):
     _description = 'Autor de libros'
 
     # --- Datos personales del autor ---
-    name = fields.Char(
-        string='Nombre y apellidos',
+    nombre_y_apellidos = fields.Char(
+        string='Nombre y apellidos del autor',
         required=True,
         help='Nombre completo del autor'
     )
@@ -39,6 +39,6 @@ class Autor(models.Model):
     lista_libros = fields.One2many(
         comodel_name='libro.libro',
         inverse_name='autor_id',
-        string='Libros escritos',
+        string='Libros escritos por el autor',
         help='Lista de libros escritos por este autor'
     )
