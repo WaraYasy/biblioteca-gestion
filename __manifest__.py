@@ -26,6 +26,8 @@ Long description of module's purpose
         'views/prestamo_views.xml',
         'views/views.xml',
         'views/templates.xml',
+        'views/view_categoria.xml',
+        'views/view_libro.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
