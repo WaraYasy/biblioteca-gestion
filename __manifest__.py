@@ -23,12 +23,15 @@ Long description of module's purpose
     # always loaded
     'data': [
         'security/ir.model.access.csv',
+        # Primero el menú raíz (prestamo_views.xml lo define)
         'views/prestamo_views.xml',
+        # Luego catálogo (define menu_biblioteca_catalogo)
+        'views/categoria_views.xml',
+        # Después los que dependen de catálogo
+        'views/libro_views.xml',
         'views/autor_views.xml',
         'views/views.xml',
         'views/templates.xml',
-        'views/view_categoria.xml',
-        'views/view_libro.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

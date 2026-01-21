@@ -119,20 +119,12 @@
         <!-- ===================== -->
         <!-- MENÚ                  -->
         <!-- ===================== -->
-        <menuitem id="menu_biblioteca_root"
-                  name="Biblioteca"
-                  sequence="10"/>
-
-        <menuitem id="menu_biblioteca_catalogo"
-                  name="Catálogo"
-                  parent="menu_biblioteca_root"
-                  sequence="10"/>
-
+        <!-- Menú Categorías (directo bajo el raíz) -->
         <menuitem id="menu_categoria"
-                  name="Zonas"
-                  parent="menu_biblioteca_catalogo"
+                  name="Categorías"
+                  parent="menu_biblioteca_root"
                   action="action_categoria"
-                  sequence="20"/>
+                  sequence="40"/>
 
     </data>
 </odoo>

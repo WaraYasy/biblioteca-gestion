@@ -132,9 +132,10 @@
         <!-- ===================== -->
         <!-- MENÚ                  -->
         <!-- ===================== -->
+        <!-- Menú Libros (directo bajo el raíz) -->
         <menuitem id="menu_libro"
                   name="Libros"
-                  parent="menu_biblioteca_catalogo"
+                  parent="menu_biblioteca_root"
                   action="action_libro"
                   sequence="10"/>
 

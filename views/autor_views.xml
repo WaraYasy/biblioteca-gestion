@@ -126,21 +126,13 @@
              MENÚS PARA AUTORES
              ===================================================== -->
 
-        <!-- Submenú intermedio "Autores" (nivel 2) -->
-        <!-- Usa el menú raíz definido en prestamo_views.xml -->
+        <!-- Menú Autores (directo bajo el raíz) -->
         <menuitem
-            id="menu_autor_parent"
+            id="menu_autor"
             name="Autores"
             parent="menu_biblioteca_root"
-            sequence="20"/>
-
-        <!-- Opción que abre la lista de autores (nivel 3) -->
-        <menuitem
-            id="menu_autor_list"
-            name="Autores"
-            parent="menu_autor_parent"
             action="action_autor"
-            sequence="10"/>
+            sequence="20"/>
 
     </data>
 </odoo>

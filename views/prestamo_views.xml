@@ -137,27 +137,19 @@
              MENÚS PARA PRÉSTAMOS
              ===================================================== -->
 
-        <!-- Menú raíz de la Biblioteca (nivel 1) -->
+        <!-- Menú raíz de la Biblioteca -->
         <menuitem
             id="menu_biblioteca_root"
             name="Biblioteca Calíope"
             sequence="10"/>
 
-        <!-- Submenú intermedio "Préstamos" (nivel 2) -->
-        <!-- Este menú agrupa las opciones relacionadas con préstamos -->
+        <!-- Menú Préstamos (directo bajo el raíz) -->
         <menuitem
-            id="menu_prestamo_parent"
+            id="menu_prestamo"
             name="Préstamos"
             parent="menu_biblioteca_root"
-            sequence="30"/>
-
-        <!-- Opción que abre la lista de préstamos (nivel 3) -->
-        <menuitem
-            id="menu_prestamo_list"
-            name="Préstamos"
-            parent="menu_prestamo_parent"
             action="action_prestamo"
-            sequence="10"/>
+            sequence="30"/>
 
     </data>
 </odoo>
