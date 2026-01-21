@@ -11,6 +11,7 @@ class Libro(models.Model):
     """
     _name = 'libro.libro'
     _description = 'Libro de la biblioteca'
+    _rec_name = 'titulo'  # Campo usado para mostrar y buscar el libro
 
     # --- Campos básicos del libro ---
     titulo = fields.Char(
