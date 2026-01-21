@@ -32,6 +32,9 @@ Long description of module's purpose
         'views/autor_views.xml',
         'views/views.xml',
         'views/templates.xml',
+        # Informes
+        'report/prestamo_report.xml',
+        'report/prestamo_report_template.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

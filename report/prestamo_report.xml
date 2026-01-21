@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Acción del informe -->
+    <record id="action_report_prestamo" model="ir.actions.report">
+        <field name="name">Comprobante de Préstamo</field>
+        <field name="model">libro.prestamo</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">biblioteca_gestion.report_prestamo</field>
+        <field name="print_report_name">'Comprobante_Prestamo_%s' % object.libro_id.titulo</field>
+        <field name="binding_model_id" ref="model_libro_prestamo"/>
+        <field name="binding_type">report</field>
+    </record>
+</odoo>
