@@ -74,41 +74,90 @@
             <field name="name">libro.libro.kanban</field>
             <field name="model">libro.libro</field>
             <field name="arch" type="xml">
-                <kanban class="o_kanban_mobile">
+                <kanban class="o_kanban_small_column">
                     <field name="titulo"/>
                     <field name="autor_id"/>
-                    <field name="genero"/>
-                    <field name="valoracion"/>
                     <field name="disponible"/>
                     <templates>
                         <t t-name="kanban-box">
-                            <div class="oe_kanban_card oe_kanban_global_click">
-                                <div class="oe_kanban_content">
-                                    <div class="o_kanban_record_title">
-                                        <strong><field name="titulo"/></strong>
+                            <div t-attf-class="oe_kanban_card oe_kanban_global_click #{record.disponible.raw_value ? 'border-start border-success border-4' : 'border-start border-danger border-4'}"
+                                 style="min-height: 180px;">
+                                <div class="oe_kanban_content d-flex flex-column h-100">
+                                    <!-- Portada placeholder -->
+                                    <div class="text-center py-3"
+                                         t-attf-style="background-color: #{record.disponible.raw_value ? '#d4edda' : '#f8d7da'};">
+                                        <i class="fa fa-book fa-4x"
+                                           t-attf-style="color: #{record.disponible.raw_value ? '#28a745' : '#dc3545'};"/>
                                     </div>
-                                    <div class="o_kanban_record_subtitle text-muted">
-                                        <field name="autor_id"/>
+                                    <!-- Información del libro -->
+                                    <div class="p-2 flex-grow-1">
+                                        <div class="o_kanban_record_title fw-bold text-truncate">
+                                            <field name="titulo"/>
+                                        </div>
+                                        <div class="text-muted small">
+                                            <i class="fa fa-user"/> <field name="autor_id"/>
+                                        </div>
                                     </div>
-                                    <div class="mt-1">
-                                        <span class="badge bg-secondary">
-                                            <field name="genero"/>
+                                    <!-- Estado -->
+                                    <div class="p-2 text-center">
+                                        <span t-if="record.disponible.raw_value"
+                                              class="badge bg-success w-100">
+                                            <i class="fa fa-check"/> Disponible
                                         </span>
-                                        <span t-if="record.disponible.raw_value" class="badge bg-success">
-                                            Disponible
+                                        <span t-else=""
+                                              class="badge bg-danger w-100">
+                                            <i class="fa fa-times"/> No disponible
                                         </span>
-                                        <span t-else="" class="badge bg-danger">
-                                            No disponible
-                                        </span>
-                                    </div>
-                                    <div class="mt-2">
-                                        <field name="valoracion" widget="progressbar"/>
                                     </div>
                                 </div>
                             </div>
                         </t>
                     </templates>
                 </kanban>
+            </field>
+        </record>
+
+        <!-- ===================== -->
+        <!-- VISTA BÚSQUEDA        -->
+        <!-- ===================== -->
+        <record id="view_libro_search" model="ir.ui.view">
+            <field name="name">libro.libro.search</field>
+            <field name="model">libro.libro</field>
+            <field name="arch" type="xml">
+                <search string="Buscar Libros">
+                    <!-- Campos de búsqueda -->
+                    <field name="titulo"/>
+                    <field name="autor_id"/>
+                    <field name="isbn"/>
+                    <field name="genero"/>
+                    <field name="editorial"/>
+
+                    <!-- Filtros personalizados -->
+                    <filter string="Libros Disponibles"
+                            name="filter_disponibles"
+                            domain="[('disponible', '=', True)]"
+                            icon="fa-check-circle"/>
+
+                    <filter string="Libros Destacados"
+                            name="filter_destacados"
+                            domain="[('valoracion', '>', 9.0)]"
+                            icon="fa-star"/>
+
+                    <filter string="No Disponibles"
+                            name="filter_no_disponibles"
+                            domain="[('disponible', '=', False)]"
+                            icon="fa-times-circle"/>
+
+                    <separator/>
+
+                    <!-- Agrupar por -->
+                    <group expand="0" string="Agrupar por">
+                        <filter string="Autor" name="group_autor" context="{'group_by': 'autor_id'}"/>
+                        <filter string="Género" name="group_genero" context="{'group_by': 'genero'}"/>
+                        <filter string="Zona" name="group_zona" context="{'group_by': 'categoria_id'}"/>
+                        <filter string="Disponibilidad" name="group_disponible" context="{'group_by': 'disponible'}"/>
+                    </group>
+                </search>
             </field>
         </record>
 
