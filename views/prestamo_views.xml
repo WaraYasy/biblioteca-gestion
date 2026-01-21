@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- =====================================================
+             VISTAS PARA EL MODELO libro.prestamo
+             ===================================================== -->
+
+        <!-- Vista Tree (Lista) de Préstamos -->
+        <!-- Muestra los préstamos en formato tabla con las columnas principales -->
+        <record id="view_prestamo_tree" model="ir.ui.view">
+            <field name="name">libro.prestamo.tree</field>
+            <field name="model">libro.prestamo</field>
+            <field name="arch" type="xml">
+                <tree string="Préstamos">
+                    <!-- Libro prestado -->
+                    <field name="libro_id"/>
+                    <!-- Usuario que solicitó el préstamo -->
+                    <field name="usuario_id"/>
+                    <!-- Fecha en que se realizó el préstamo -->
+                    <field name="fecha_prestamo"/>
+                    <!-- Fecha de devolución (puede estar vacía si no se ha devuelto) -->
+                    <field name="fecha_devolucion"/>
+                    <!-- Estado actual del préstamo con colores según el estado -->
+                    <field name="estado" decoration-danger="estado == 'retrasado' or estado == 'perdido'" decoration-success="estado == 'devuelto'" decoration-warning="estado == 'prestado'" widget="badge"/>
+                    <!-- Multa por retraso (si aplica) -->
+                    <field name="multa"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Vista Form (Formulario) de Préstamos -->
+        <!-- Formulario completo para crear/editar un préstamo -->
+        <record id="view_prestamo_form" model="ir.ui.view">
+            <field name="name">libro.prestamo.form</field>
+            <field name="model">libro.prestamo</field>
+            <field name="arch" type="xml">
+                <form string="Préstamo">
+                    <sheet>
+                        <!-- Cabecera con el estado del préstamo -->
+                        <group>
+                            <group string="Información del Préstamo">
+                                <!-- Libro que se presta (obligatorio) -->
+                                <field name="libro_id"/>
+                                <!-- Usuario que solicita el préstamo (obligatorio) -->
+                                <field name="usuario_id"/>
+                            </group>
+                            <group string="Fechas">
+                                <!-- Fecha en que se realiza el préstamo (obligatorio) -->
+                                <field name="fecha_prestamo"/>
+                                <!-- Fecha en que se devuelve el libro -->
+                                <field name="fecha_devolucion"/>
+                            </group>
+                        </group>
+                        <group>
+                            <group string="Estado y Multa">
+                                <!-- Estado actual del préstamo -->
+                                <field name="estado"/>
+                                <!-- Multa por retraso en la devolución -->
+                                <field name="multa"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- =====================================================
+             ACCIÓN DE VENTANA PARA PRÉSTAMOS
+             ===================================================== -->
+
+        <!-- Acción que abre las vistas de préstamos -->
+        <record id="action_prestamo" model="ir.actions.act_window">
+            <field name="name">Préstamos</field>
+            <field name="res_model">libro.prestamo</field>
+            <!-- Modos de vista disponibles: lista y formulario -->
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Crear el primer préstamo
+                </p>
+                <p>
+                    Gestiona los préstamos de libros de la biblioteca.
+                </p>
+            </field>
+        </record>
+
+        <!-- =====================================================
+             MENÚS PARA PRÉSTAMOS
+             ===================================================== -->
+
+        <!-- Menú raíz de la Biblioteca -->
+        <!-- NOTA: Cambiar [Tu Nombre] por tu nombre real -->
+        <menuitem
+            id="menu_biblioteca_root"
+            name="Biblioteca [Tu Nombre]"
+            sequence="10"/>
+
+        <!-- Submenú de Préstamos bajo el menú raíz -->
+        <menuitem
+            id="menu_prestamo"
+            name="Préstamos"
+            parent="menu_biblioteca_root"
+            action="action_prestamo"
+            sequence="30"/>
+
+    </data>
+</odoo>
