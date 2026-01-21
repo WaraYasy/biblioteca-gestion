@@ -3,3 +3,4 @@
 from . import libro
 from . import autor
 from . import prestamo
+from . import categoria

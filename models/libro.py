@@ -97,6 +97,14 @@ class Libro(models.Model):
         help='Autor del libro'
     )
 
+    # --- Relación con categoría ---
+    categoria_id = fields.Many2one(
+        comodel_name='libro.categoria',
+        string='Categoría',
+        ondelete='set null',
+        help='Categoría del libro'
+    )
+
     # --- Método computado para calcular el nivel de valoración ---
     @api.depends('valoracion')
     def _compute_nivel_valoracion(self):
