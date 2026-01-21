@@ -1,12 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <!-- Plantilla del informe -->
+    <template id="prestamo_comprobante">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h1 style="text-align:center;">Comprobante de Préstamo</h1>
+                        <h3 style="text-align:center;">Biblioteca Calíope</h3>
+
+                        <h4>Libro</h4>
+                        <p><strong>Título:</strong> <span t-field="o.libro_id.titulo"/></p>
+                        <p><strong>ISBN:</strong> <span t-field="o.libro_id.isbn"/></p>
+
+                        <h4>Usuario</h4>
+                        <p><strong>Nombre:</strong> <span t-field="o.usuario_id.name"/></p>
+
+                        <h4>Préstamo</h4>
+                        <p><strong>Fecha préstamo:</strong> <span t-field="o.fecha_prestamo"/></p>
+                        <p><strong>Fecha devolución:</strong> <span t-field="o.fecha_devolucion"/></p>
+                        <p><strong>Estado:</strong> <span t-field="o.estado"/></p>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
     <!-- Acción del informe -->
-    <record id="action_report_prestamo" model="ir.actions.report">
+    <record id="action_prestamo_comprobante" model="ir.actions.report">
         <field name="name">Comprobante de Préstamo</field>
         <field name="model">libro.prestamo</field>
         <field name="report_type">qweb-pdf</field>
-        <field name="report_name">biblioteca_gestion.report_prestamo</field>
-        <field name="print_report_name">'Comprobante_Prestamo_%s' % object.libro_id.titulo</field>
+        <field name="report_name">biblioteca-gestion.prestamo_comprobante</field>
         <field name="binding_model_id" ref="model_libro_prestamo"/>
         <field name="binding_type">report</field>
     </record>
