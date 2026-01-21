@@ -14,7 +14,7 @@ class Prestamo(models.Model):
     # --- Relación con el libro prestado ---
     libro_id = fields.Many2one(
         comodel_name='libro.libro',
-        string='Libro',
+        string='Libro prestado',
         required=True,
         ondelete='restrict',
         help='Libro que se presta'
@@ -24,7 +24,7 @@ class Prestamo(models.Model):
     # Usamos res.partner como modelo de usuario (contactos de Odoo)
     usuario_id = fields.Many2one(
         comodel_name='res.partner',
-        string='Usuario',
+        string='Usuario que pide',
         required=True,
         ondelete='restrict',
         help='Usuario que solicita el préstamo'
@@ -34,7 +34,6 @@ class Prestamo(models.Model):
     fecha_prestamo = fields.Date(
         string='Fecha de préstamo',
         required=True,
-        default=fields.Date.context_today,
         help='Fecha en que se realizó el préstamo'
     )
 
@@ -51,14 +50,12 @@ class Prestamo(models.Model):
             ('retrasado', 'Retrasado'),
             ('perdido', 'Perdido'),
         ],
-        string='Estado',
-        default='prestado',
+        string='Estado del préstamo',
         help='Estado actual del préstamo'
     )
 
     # --- Multa por retraso ---
     multa = fields.Float(
-        string='Multa',
-        default=0.0,
+        string='Multa por retraso',
         help='Importe de la multa por retraso en la devolución'
     )
