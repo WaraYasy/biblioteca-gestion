@@ -24,6 +24,7 @@ Long description of module's purpose
     'data': [
         'security/ir.model.access.csv',
         'views/prestamo_views.xml',
+        'views/autor_views.xml',
         'views/views.xml',
         'views/templates.xml',
         'views/view_categoria.xml',

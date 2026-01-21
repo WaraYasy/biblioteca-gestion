@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- =====================================================
+             VISTAS PARA EL MODELO libro.autor
+             ===================================================== -->
+
+        <!-- Vista Tree (Lista) de Autores -->
+        <!-- Muestra los autores en formato tabla -->
+        <record id="view_autor_tree" model="ir.ui.view">
+            <field name="name">libro.autor.tree</field>
+            <field name="model">libro.autor</field>
+            <field name="arch" type="xml">
+                <tree string="Autores">
+                    <!-- Nombre completo del autor -->
+                    <field name="nombre_y_apellidos"/>
+                    <!-- Fecha de nacimiento -->
+                    <field name="fecha_nacimiento"/>
+                    <!-- País de origen -->
+                    <field name="nacionalidad"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Vista Form (Formulario) de Autores -->
+        <!-- Formulario completo para crear/editar un autor -->
+        <record id="view_autor_form" model="ir.ui.view">
+            <field name="name">libro.autor.form</field>
+            <field name="model">libro.autor</field>
+            <field name="arch" type="xml">
+                <form string="Autor">
+                    <sheet>
+                        <group>
+                            <!-- Datos personales del autor -->
+                            <group string="Datos Personales">
+                                <!-- Nombre y apellidos (obligatorio) -->
+                                <field name="nombre_y_apellidos"/>
+                                <!-- Fecha de nacimiento (obligatorio) -->
+                                <field name="fecha_nacimiento"/>
+                                <!-- Nacionalidad -->
+                                <field name="nacionalidad"/>
+                            </group>
+                        </group>
+                        <group>
+                            <!-- Biografía del autor -->
+                            <group string="Biografía">
+                                <field name="biografia" nolabel="1" placeholder="Escribe aquí la biografía del autor..."/>
+                            </group>
+                        </group>
+                        <!-- Pestaña con los libros del autor -->
+                        <notebook>
+                            <page string="Libros" name="libros">
+                                <!-- Lista de libros escritos por este autor -->
+                                <field name="lista_libros">
+                                    <tree>
+                                        <field name="titulo"/>
+                                        <field name="isbn"/>
+                                        <field name="fecha_publicacion"/>
+                                        <field name="disponible"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Vista Kanban de Autores -->
+        <!-- Muestra los autores en tarjetas -->
+        <record id="view_autor_kanban" model="ir.ui.view">
+            <field name="name">libro.autor.kanban</field>
+            <field name="model">libro.autor</field>
+            <field name="arch" type="xml">
+                <kanban class="o_kanban_mobile">
+                    <!-- Campos necesarios para la vista -->
+                    <field name="nombre_y_apellidos"/>
+                    <field name="fecha_nacimiento"/>
+                    <field name="nacionalidad"/>
+                    <field name="lista_libros"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_global_click oe_kanban_card">
+                                <div class="oe_kanban_content">
+                                    <!-- Nombre del autor -->
+                                    <div class="o_kanban_record_title">
+                                        <strong><field name="nombre_y_apellidos"/></strong>
+                                    </div>
+                                    <!-- Nacionalidad -->
+                                    <div class="o_kanban_record_subtitle">
+                                        <field name="nacionalidad"/>
+                                    </div>
+                                    <!-- Fecha de nacimiento -->
+                                    <div class="mt-2">
+                                        <span>Nacimiento: <field name="fecha_nacimiento"/></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <!-- =====================================================
+             ACCIÓN DE VENTANA PARA AUTORES
+             ===================================================== -->
+
+        <!-- Acción que abre las vistas de autores -->
+        <record id="action_autor" model="ir.actions.act_window">
+            <field name="name">Autores</field>
+            <field name="res_model">libro.autor</field>
+            <!-- Modos de vista disponibles: lista, kanban y formulario -->
+            <field name="view_mode">tree,kanban,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Crear el primer autor
+                </p>
+                <p>
+                    Gestiona los autores de la biblioteca.
+                </p>
+            </field>
+        </record>
+
+        <!-- =====================================================
+             MENÚS PARA AUTORES
+             ===================================================== -->
+
+        <!-- Submenú intermedio "Autores" (nivel 2) -->
+        <!-- Usa el menú raíz definido en prestamo_views.xml -->
+        <menuitem
+            id="menu_autor_parent"
+            name="Autores"
+            parent="menu_biblioteca_root"
+            sequence="20"/>
+
+        <!-- Opción que abre la lista de autores (nivel 3) -->
+        <menuitem
+            id="menu_autor_list"
+            name="Autores"
+            parent="menu_autor_parent"
+            action="action_autor"
+            sequence="10"/>
+
+    </data>
+</odoo>

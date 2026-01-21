@@ -64,6 +64,55 @@
             </field>
         </record>
 
+        <!-- Vista Kanban de Préstamos -->
+        <!-- Muestra los préstamos en tarjetas con colores según el estado -->
+        <record id="view_prestamo_kanban" model="ir.ui.view">
+            <field name="name">libro.prestamo.kanban</field>
+            <field name="model">libro.prestamo</field>
+            <field name="arch" type="xml">
+                <kanban class="o_kanban_mobile">
+                    <!-- Campos necesarios para la vista -->
+                    <field name="libro_id"/>
+                    <field name="usuario_id"/>
+                    <field name="fecha_prestamo"/>
+                    <field name="fecha_devolucion"/>
+                    <field name="estado"/>
+                    <field name="multa"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <!-- Color de la tarjeta según el estado -->
+                            <div t-attf-class="oe_kanban_global_click oe_kanban_card #{record.estado.raw_value == 'retrasado' ? 'bg-danger' : record.estado.raw_value == 'devuelto' ? 'bg-success' : record.estado.raw_value == 'perdido' ? 'bg-dark' : 'bg-warning'}">
+                                <div class="oe_kanban_content">
+                                    <!-- Título: nombre del libro -->
+                                    <div class="o_kanban_record_title">
+                                        <strong><field name="libro_id"/></strong>
+                                    </div>
+                                    <!-- Usuario que pidió el préstamo -->
+                                    <div class="o_kanban_record_subtitle">
+                                        <field name="usuario_id"/>
+                                    </div>
+                                    <!-- Fechas del préstamo -->
+                                    <div class="mt-2">
+                                        <span>Préstamo: <field name="fecha_prestamo"/></span>
+                                    </div>
+                                    <div>
+                                        <span>Devolución: <field name="fecha_devolucion"/></span>
+                                    </div>
+                                    <!-- Estado y multa -->
+                                    <div class="mt-2">
+                                        <span class="badge"><field name="estado"/></span>
+                                        <t t-if="record.multa.raw_value > 0">
+                                            <span class="badge bg-danger ms-1">Multa: <field name="multa"/>€</span>
+                                        </t>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
         <!-- =====================================================
              ACCIÓN DE VENTANA PARA PRÉSTAMOS
              ===================================================== -->
@@ -72,8 +121,8 @@
         <record id="action_prestamo" model="ir.actions.act_window">
             <field name="name">Préstamos</field>
             <field name="res_model">libro.prestamo</field>
-            <!-- Modos de vista disponibles: lista y formulario -->
-            <field name="view_mode">tree,form</field>
+            <!-- Modos de vista disponibles: lista, kanban y formulario -->
+            <field name="view_mode">tree,kanban,form</field>
             <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">
                     Crear el primer préstamo
@@ -88,20 +137,27 @@
              MENÚS PARA PRÉSTAMOS
              ===================================================== -->
 
-        <!-- Menú raíz de la Biblioteca -->
-        <!-- NOTA: Cambiar [Tu Nombre] por tu nombre real -->
+        <!-- Menú raíz de la Biblioteca (nivel 1) -->
         <menuitem
             id="menu_biblioteca_root"
-            name="Biblioteca [Tu Nombre]"
+            name="Biblioteca Calíope"
             sequence="10"/>
 
-        <!-- Submenú de Préstamos bajo el menú raíz -->
+        <!-- Submenú intermedio "Préstamos" (nivel 2) -->
+        <!-- Este menú agrupa las opciones relacionadas con préstamos -->
         <menuitem
-            id="menu_prestamo"
+            id="menu_prestamo_parent"
             name="Préstamos"
             parent="menu_biblioteca_root"
-            action="action_prestamo"
             sequence="30"/>
+
+        <!-- Opción que abre la lista de préstamos (nivel 3) -->
+        <menuitem
+            id="menu_prestamo_list"
+            name="Préstamos"
+            parent="menu_prestamo_parent"
+            action="action_prestamo"
+            sequence="10"/>
 
     </data>
 </odoo>
