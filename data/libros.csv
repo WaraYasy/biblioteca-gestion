@@ -1,0 +1,7 @@
+titulo,isbn,fecha_publicacion,editorial,genero,paginas,disponible,sinopsis,valoracion,autor_id,categoria_id
+Don Quijote de la Mancha,9788420412146,1605-01-16,Alfaguara,novela,1250,True,Las aventuras del ingenioso hidalgo Don Quijote y su escudero Sancho Panza,9.8,Miguel de Cervantes Saavedra,Clásicos
+Cien años de soledad,9788497592208,1967-05-30,Sudamericana,novela,471,True,La historia de la familia Buendía a lo largo de siete generaciones en Macondo,9.5,Gabriel García Márquez,Clásicos
+Harry Potter y la piedra filosofal,9788478884452,1997-06-26,Salamandra,fantasia,254,False,Harry Potter descubre que es un mago y comienza su aventura en Hogwarts,8.9,J.K. Rowling,Infantil
+Breve historia del tiempo,9788498921939,1988-04-01,Crítica,ensayo,256,True,Explicación accesible sobre el universo el Big Bang y los agujeros negros,8.5,Stephen Hawking,Ciencia y Tecnología
+Fundación,9788497599245,1951-05-01,Debolsillo,ciencia_ficcion,320,True,El colapso del Imperio Galáctico y el nacimiento de la Fundación,9.2,Isaac Asimov,Novedades
+Crónica de una muerte anunciada,9788497592437,1981-04-01,Mondadori,novela,128,True,La reconstrucción de un crimen anunciado en un pequeño pueblo,7.8,Gabriel García Márquez,Clásicos

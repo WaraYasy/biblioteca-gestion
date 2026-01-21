@@ -5,22 +5,22 @@ from odoo import models, fields
 
 class Categoria(models.Model):
     """
-    Modelo para gestionar las zonas/secciones de la biblioteca.
-    Permite organizar los libros por ubicación o sección especial.
+    Modelo para gestionar las categorías de la biblioteca.
+    Permite organizar los libros por categorías o secciones.
     """
     _name = 'libro.categoria'
-    _description = 'Zona de la biblioteca'
+    _description = 'Categoría de la biblioteca'
 
     # --- Campos de la categoría ---
     name = fields.Char(
         string='Nombre',
         required=True,
-        help='Nombre de la zona (ej: Novedades, Clásicos, Infantil, Recomendados)'
+        help='Nombre de la categoría (ej: Novedades, Clásicos, Infantil, Recomendados)'
     )
 
     descripcion = fields.Text(
         string='Descripción',
-        help='Descripción de la zona'
+        help='Descripción de la categoría'
     )
 
     ubicacion = fields.Char(
@@ -39,14 +39,14 @@ class Categoria(models.Model):
         comodel_name='libro.libro',
         inverse_name='categoria_id',
         string='Libros',
-        help='Libros en esta zona'
+        help='Libros en esta categoría'
     )
 
     # --- Campo calculado: cantidad de libros ---
     cantidad_libros = fields.Integer(
         string='Cantidad de libros',
         compute='_compute_cantidad_libros',
-        help='Número de libros en esta zona'
+        help='Número de libros en esta categoría'
     )
 
     def _compute_cantidad_libros(self):

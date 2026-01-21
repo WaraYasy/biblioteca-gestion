@@ -97,12 +97,12 @@ class Libro(models.Model):
         help='Autor del libro'
     )
 
-    # --- Relación con zona de la biblioteca ---
+    # --- Relación con categoría de la biblioteca ---
     categoria_id = fields.Many2one(
         comodel_name='libro.categoria',
-        string='Zona',
+        string='Categoría',
         ondelete='set null',
-        help='Zona de la biblioteca donde se encuentra (ej: Novedades, Clásicos)'
+        help='Categoría del libro (ej: Novedades, Clásicos, Infantil)'
     )
 
     # --- Método computado para calcular el nivel de valoración ---

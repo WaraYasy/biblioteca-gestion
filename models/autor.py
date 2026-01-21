@@ -10,6 +10,7 @@ class Autor(models.Model):
     """
     _name = 'libro.autor'
     _description = 'Autor de libros'
+    _rec_name = 'nombre_y_apellidos'  # Campo usado para mostrar y buscar el autor
 
     # --- Datos personales del autor ---
     nombre_y_apellidos = fields.Char(

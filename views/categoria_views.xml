@@ -25,11 +25,11 @@
             <field name="name">libro.categoria.form</field>
             <field name="model">libro.categoria</field>
             <field name="arch" type="xml">
-                <form string="Zona de la Biblioteca">
+                <form string="Categoría">
                     <sheet>
                         <div class="oe_title">
                             <h1>
-                                <field name="name" placeholder="Nombre de la zona"/>
+                                <field name="name" placeholder="Nombre de la categoría"/>
                             </h1>
                         </div>
                         <group>
@@ -43,9 +43,9 @@
                         </group>
                         <notebook>
                             <page string="Descripción">
-                                <field name="descripcion" placeholder="Descripción de la zona..."/>
+                                <field name="descripcion" placeholder="Descripción de la categoría..."/>
                             </page>
-                            <page string="Libros en esta zona">
+                            <page string="Libros en esta categoría">
                                 <field name="libro_ids">
                                     <tree>
                                         <field name="titulo"/>
@@ -103,15 +103,15 @@
         <!-- ACCIÓN                -->
         <!-- ===================== -->
         <record id="action_categoria" model="ir.actions.act_window">
-            <field name="name">Zonas de la Biblioteca</field>
+            <field name="name">Categorías</field>
             <field name="res_model">libro.categoria</field>
             <field name="view_mode">kanban,tree,form</field>
             <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">
-                    Crea tu primera zona de biblioteca
+                    Crea tu primera categoría
                 </p>
                 <p>
-                    Las zonas te permiten organizar los libros por secciones como Novedades, Clásicos, Infantil, etc.
+                    Las categorías te permiten organizar los libros por secciones como Novedades, Clásicos, Infantil, etc.
                 </p>
             </field>
         </record>
