@@ -114,6 +114,57 @@
         </record>
 
         <!-- =====================================================
+             VISTA DE BÚSQUEDA PARA PRÉSTAMOS
+             ===================================================== -->
+        <record id="view_prestamo_search" model="ir.ui.view">
+            <field name="name">libro.prestamo.search</field>
+            <field name="model">libro.prestamo</field>
+            <field name="arch" type="xml">
+                <search string="Buscar Préstamos">
+                    <!-- Campos de búsqueda -->
+                    <field name="libro_id"/>
+                    <field name="usuario_id"/>
+
+                    <!-- Filtros personalizados -->
+                    <filter string="Préstamos Activos"
+                            name="filter_activos"
+                            domain="[('estado', '=', 'prestado')]"
+                            icon="fa-book"/>
+
+                    <filter string="Próximas Devoluciones (3 días)"
+                            name="filter_proximas"
+                            domain="[('estado', '=', 'prestado'), ('fecha_devolucion', '&lt;=', (context_today() + relativedelta(days=3)).strftime('%Y-%m-%d')), ('fecha_devolucion', '&gt;=', context_today().strftime('%Y-%m-%d'))]"
+                            icon="fa-clock-o"/>
+
+                    <filter string="Préstamos Vencidos"
+                            name="filter_vencidos"
+                            domain="[('estado', '=', 'retrasado')]"
+                            icon="fa-exclamation-triangle"/>
+
+                    <filter string="Devueltos"
+                            name="filter_devueltos"
+                            domain="[('estado', '=', 'devuelto')]"
+                            icon="fa-check"/>
+
+                    <filter string="Perdidos"
+                            name="filter_perdidos"
+                            domain="[('estado', '=', 'perdido')]"
+                            icon="fa-times"/>
+
+                    <separator/>
+
+                    <!-- Agrupar por -->
+                    <group expand="0" string="Agrupar por">
+                        <filter string="Estado" name="group_estado" context="{'group_by': 'estado'}"/>
+                        <filter string="Usuario" name="group_usuario" context="{'group_by': 'usuario_id'}"/>
+                        <filter string="Libro" name="group_libro" context="{'group_by': 'libro_id'}"/>
+                        <filter string="Fecha Préstamo" name="group_fecha" context="{'group_by': 'fecha_prestamo'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- =====================================================
              ACCIÓN DE VENTANA PARA PRÉSTAMOS
              ===================================================== -->
 
