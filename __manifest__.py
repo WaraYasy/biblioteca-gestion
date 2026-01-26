@@ -22,6 +22,7 @@ Long description of module's purpose
 
     # always loaded
     'data': [
+        'security/biblioteca_security.xml',
         'security/ir.model.access.csv',
         # Primero el menú raíz (prestamo_views.xml lo define)
         'views/prestamo_views.xml',
