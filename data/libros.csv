@@ -1,7 +1,15 @@
 titulo,isbn,fecha_publicacion,editorial,genero,paginas,disponible,sinopsis,valoracion,autor_id,categoria_id
 Don Quijote de la Mancha,9788420412146,1605-01-16,Alfaguara,novela,1250,True,Las aventuras del ingenioso hidalgo Don Quijote y su escudero Sancho Panza,9.8,Miguel de Cervantes Saavedra,Clásicos
-Cien años de soledad,9788497592208,1967-05-30,Sudamericana,novela,471,True,La historia de la familia Buendía a lo largo de siete generaciones en Macondo,9.5,Gabriel García Márquez,Clásicos
-Harry Potter y la piedra filosofal,9788478884452,1997-06-26,Salamandra,fantasia,254,False,Harry Potter descubre que es un mago y comienza su aventura en Hogwarts,8.9,J.K. Rowling,Infantil
+Cien años de soledad,9788497592208,1967-05-30,Sudamericana,novela,471,False,La historia de la familia Buendía a lo largo de siete generaciones en Macondo,9.5,Gabriel García Márquez,Clásicos
+Harry Potter y la piedra filosofal,9788478884452,1997-06-26,Salamandra,fantasia,254,False,Harry Potter descubre que es un mago y comienza su aventura en Hogwarts,9.2,J.K. Rowling,Novedades
+Harry Potter y la cámara secreta,9788478885190,1998-07-02,Salamandra,fantasia,286,True,Harry regresa a Hogwarts donde una misteriosa cámara ha sido abierta,8.9,J.K. Rowling,Novedades
 Breve historia del tiempo,9788498921939,1988-04-01,Crítica,ensayo,256,True,Explicación accesible sobre el universo el Big Bang y los agujeros negros,8.5,Stephen Hawking,Ciencia y Tecnología
-Fundacion,9788497599245,1951-05-01,Debolsillo,ciencia_ficcion,320,True,El colapso del Imperio Galáctico y el nacimiento de la Fundación,9.2,Isaac Asimov,Novedades
+Fundación,9788497599245,1951-05-01,Debolsillo,ciencia_ficcion,320,True,El colapso del Imperio Galáctico y el nacimiento de la Fundación,9.1,Isaac Asimov,Recomendados
 Crónica de una muerte anunciada,9788497592437,1981-04-01,Mondadori,novela,128,True,La reconstrucción de un crimen anunciado en un pequeño pueblo,7.8,Gabriel García Márquez,Clásicos
+1984,9788499890944,1949-06-08,Debolsillo,ciencia_ficcion,326,False,Una sociedad totalitaria donde el Gran Hermano todo lo vigila,9.4,George Orwell,Clásicos
+Yo Robot,9788435018364,1950-12-02,Edhasa,ciencia_ficcion,256,True,Colección de relatos sobre robots y las tres leyes de la robótica,8.5,Isaac Asimov,Clásicos
+It,9788497595698,1986-09-15,Debolsillo,terror,1504,False,Un grupo de amigos enfrenta a una entidad maligna que toma forma de payaso,8.8,Stephen King,Novedades
+El resplandor,9788497596336,1977-01-28,Debolsillo,terror,688,True,Una familia aislada en un hotel durante el invierno enfrenta fuerzas sobrenaturales,9.0,Stephen King,Recomendados
+La casa de los espíritus,9788401352898,1982-01-01,Plaza y Janés,novela,448,True,Saga familiar que recorre cuatro generaciones entrelazando lo natural con lo sobrenatural,8.7,Isabel Allende,Recomendados
+Manual de jardinería básica,9781234567890,2020-03-15,Ediciones Prácticas,otro,120,True,Guía básica para el cuidado de plantas y jardines,4.5,,Novedades
+Cocina mediterránea,9781234567891,2019-06-20,Ediciones Gastro,otro,200,True,Recetas tradicionales del mediterráneo,6.2,,Novedades

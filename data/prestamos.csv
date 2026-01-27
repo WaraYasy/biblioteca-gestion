@@ -1,4 +1,26 @@
 libro_id,usuario_id,fecha_prestamo,fecha_devolucion,estado,multa
-Harry Potter y la piedra filosofal,Administrator,2025-01-10,2025-01-24,prestado,0
-Don Quijote de la Mancha,Administrator,2025-01-05,2025-01-15,devuelto,0
-Fundacion,Administrator,2024-12-01,2024-12-15,retrasado,5.50
+Cien años de soledad,Ana López,2025-09-05,2025-09-20,devuelto,0
+Don Quijote de la Mancha,Carlos Pérez,2025-09-10,2025-09-25,devuelto,0
+Harry Potter y la piedra filosofal,Lucía Gómez,2025-10-01,2025-10-15,devuelto,0
+1984,Mario Ruiz,2025-10-05,2025-10-22,devuelto,0
+Fundación,Elena Martín,2025-10-15,2025-10-30,devuelto,0
+Cien años de soledad,Mario Ruiz,2025-11-01,2025-11-15,devuelto,0
+It,Ana López,2025-11-05,2025-11-25,devuelto,0
+Harry Potter y la piedra filosofal,Carlos Pérez,2025-11-10,2025-11-28,devuelto,0
+El resplandor,Lucía Gómez,2025-11-15,2025-12-01,devuelto,0
+Cien años de soledad,Lucía Gómez,2025-12-01,2025-12-15,devuelto,0
+Yo Robot,Elena Martín,2025-12-05,2025-12-20,devuelto,0
+La casa de los espíritus,Ana López,2025-12-10,2025-12-28,devuelto,0
+Don Quijote de la Mancha,Mario Ruiz,2025-12-01,2025-12-25,devuelto,5.00
+Harry Potter y la cámara secreta,Carlos Pérez,2025-12-15,2026-01-10,devuelto,7.50
+Cien años de soledad,Ana López,2026-01-10,,prestado,0
+Harry Potter y la piedra filosofal,Carlos Pérez,2026-01-15,,prestado,0
+1984,Elena Martín,2026-01-18,,prestado,0
+It,Lucía Gómez,2026-01-20,,prestado,0
+Fundación,Mario Ruiz,2025-12-20,,retrasado,10.00
+El resplandor,Ana López,2025-12-15,,retrasado,15.00
+Manual de jardinería básica,Carlos Pérez,2025-10-01,,perdido,25.00
+Don Quijote de la Mancha,Lucía Gómez,2026-01-05,2026-01-20,devuelto,0
+La casa de los espíritus,Mario Ruiz,2026-01-08,2026-01-22,devuelto,0
+Yo Robot,Ana López,2026-01-12,,prestado,0
+Harry Potter y la cámara secreta,Elena Martín,2026-01-25,,prestado,0
