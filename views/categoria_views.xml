@@ -1,51 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
+        <!-- =====================================================================
+             VISTAS PARA EL MODELO libro.categoria
+             =====================================================================
+             Este archivo define todas las vistas (tree, form, kanban, search)
+             para gestionar las categorías de la biblioteca (Novedades, Clásicos,
+             Infantil, Recomendados, etc.)
+             ===================================================================== -->
 
-        <!-- ===================== -->
-        <!-- VISTA ÁRBOL (TREE)    -->
-        <!-- ===================== -->
+        <!-- VISTA ÁRBOL (TREE) - Lista de categorías en formato tabla -->
+        <!-- Muestra columnas: nombre, ubicación, cantidad de libros y color -->
         <record id="view_categoria_tree" model="ir.ui.view">
             <field name="name">libro.categoria.tree</field>
             <field name="model">libro.categoria</field>
             <field name="arch" type="xml">
                 <tree>
+                    <!-- Nombre de la categoría -->
                     <field name="name"/>
+                    <!-- Ubicación física en la biblioteca -->
                     <field name="ubicacion"/>
+                    <!-- Cantidad de libros en esta categoría (calculado) -->
                     <field name="cantidad_libros"/>
+                    <!-- Color asignado a la categoría -->
                     <field name="color" widget="color_picker"/>
                 </tree>
             </field>
         </record>
 
-        <!-- ===================== -->
-        <!-- VISTA FORMULARIO      -->
-        <!-- ===================== -->
+        <!-- VISTA FORMULARIO - Edición detallada de una categoría -->
         <record id="view_categoria_form" model="ir.ui.view">
             <field name="name">libro.categoria.form</field>
             <field name="model">libro.categoria</field>
             <field name="arch" type="xml">
                 <form string="Categoría">
                     <sheet>
+                        <!-- Encabezado con el nombre de la categoría -->
                         <div class="oe_title">
                             <h1>
                                 <field name="name" placeholder="Nombre de la categoría"/>
                             </h1>
                         </div>
+                        <!-- Información general de la categoría -->
                         <group>
+                            <!-- Ubicación física y color de la categoría -->
                             <group string="Información">
                                 <field name="ubicacion" placeholder="Ej: Planta baja, Pasillo 3"/>
                                 <field name="color" widget="color_picker"/>
                             </group>
+                            <!-- Estadísticas: número de libros -->
                             <group string="Estadísticas">
                                 <field name="cantidad_libros"/>
                             </group>
                         </group>
+                        <!-- Tabs con descripción y lista de libros -->
                         <notebook>
+                            <!-- Pestaña 1: Descripción de la categoría -->
                             <page string="Descripción">
                                 <field name="descripcion" placeholder="Descripción de la categoría..."/>
                             </page>
+                            <!-- Pestaña 2: Libros que pertenecen a esta categoría -->
                             <page string="Libros en esta categoría">
+                                <!-- Vista árbol embedida con los libros -->
                                 <field name="libro_ids">
                                     <tree>
                                         <field name="titulo"/>
@@ -61,31 +77,35 @@
             </field>
         </record>
 
-        <!-- ===================== -->
-        <!-- VISTA KANBAN          -->
-        <!-- ===================== -->
+        <!-- VISTA KANBAN - Tarjetas visuales de categorías -->
         <record id="view_categoria_kanban" model="ir.ui.view">
             <field name="name">libro.categoria.kanban</field>
             <field name="model">libro.categoria</field>
             <field name="arch" type="xml">
                 <kanban class="o_kanban_mobile">
+                    <!-- Campos que se cargan para la vista -->
                     <field name="name"/>
                     <field name="ubicacion"/>
                     <field name="cantidad_libros"/>
                     <field name="color"/>
+                    <!-- Plantilla para cada tarjeta -->
                     <templates>
                         <t t-name="kanban-box">
+                            <!-- Tarjeta con borde izquierdo del color de la categoría -->
                             <div t-attf-class="oe_kanban_card oe_kanban_global_click"
                                  t-attf-style="border-left: 4px solid #{kanban_color(record.color.raw_value)};">
                                 <div class="oe_kanban_content">
+                                    <!-- Nombre de la categoría (título) -->
                                     <div class="o_kanban_record_title">
                                         <strong><field name="name"/></strong>
                                     </div>
+                                    <!-- Ubicación (subtítulo) -->
                                     <div class="o_kanban_record_subtitle text-muted">
                                         <span t-if="record.ubicacion.value">
                                             <i class="fa fa-map-marker"/> <field name="ubicacion"/>
                                         </span>
                                     </div>
+                                    <!-- Número de libros en la categoría -->
                                     <div class="mt-2">
                                         <span class="badge bg-primary">
                                             <field name="cantidad_libros"/> libros

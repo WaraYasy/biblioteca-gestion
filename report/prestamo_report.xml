@@ -1,21 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- Plantilla del informe -->
+    <!-- ============================================================
+         INFORME DE COMPROBANTE DE PRÉSTAMO
+         ============================================================
+         Este archivo define el reporte PDF que se genera cuando se
+         realiza un préstamo de libro. Muestra la información completa
+         del préstamo incluyendo datos del libro, usuario y fechas.
+         ============================================================ -->
+
+    <!-- Plantilla QWeb del informe: estructura y diseño del PDF -->
     <template id="prestamo_comprobante">
+        <!-- Contenedor HTML externo (layout estándar de Odoo) -->
         <t t-call="web.html_container">
+            <!-- Itera sobre los documentos seleccionados para generar múltiples reportes -->
             <t t-foreach="docs" t-as="o">
+                <!-- Utiliza el layout externo de Odoo (encabezado y pie de página) -->
                 <t t-call="web.external_layout">
+                    <!-- Contenido principal del PDF -->
                     <div class="page">
+                        <!-- Título del comprobante -->
                         <h1 style="text-align:center;">Comprobante de Préstamo</h1>
+                        <!-- Nombre de la biblioteca -->
                         <h3 style="text-align:center;">Biblioteca Calíope</h3>
 
+                        <!-- Sección: Información del Libro -->
                         <h4>Libro</h4>
                         <p><strong>Título:</strong> <span t-field="o.libro_id.titulo"/></p>
                         <p><strong>ISBN:</strong> <span t-field="o.libro_id.isbn"/></p>
 
+                        <!-- Sección: Información del Usuario -->
                         <h4>Usuario</h4>
                         <p><strong>Nombre:</strong> <span t-field="o.usuario_id.name"/></p>
 
+                        <!-- Sección: Datos del Préstamo -->
                         <h4>Préstamo</h4>
                         <p><strong>Fecha préstamo:</strong> <span t-field="o.fecha_prestamo"/></p>
                         <p><strong>Fecha devolución:</strong> <span t-field="o.fecha_devolucion"/></p>
@@ -26,13 +43,20 @@
         </t>
     </template>
 
-    <!-- Acción del informe -->
+    <!-- Acción que configura cómo se genera el informe PDF -->
+    <!-- Esta acción aparecerá en el botón de "Imprimir" en los formularios de préstamo -->
     <record id="action_prestamo_comprobante" model="ir.actions.report">
+        <!-- Nombre que aparece en la interfaz de usuario -->
         <field name="name">Comprobante de Préstamo</field>
+        <!-- Modelo sobre el cual actúa el reporte -->
         <field name="model">libro.prestamo</field>
+        <!-- Tipo de reporte: QWeb genera PDF automáticamente -->
         <field name="report_type">qweb-pdf</field>
+        <!-- Identificador único de la plantilla QWeb que define el contenido del PDF -->
         <field name="report_name">biblioteca-gestion.prestamo_comprobante</field>
+        <!-- Referencia al modelo para que aparezca en el menú contextual -->
         <field name="binding_model_id" ref="model_libro_prestamo"/>
+        <!-- Tipo de binding: 'report' hace que aparezca en la lista de reportes -->
         <field name="binding_type">report</field>
     </record>
 </odoo>

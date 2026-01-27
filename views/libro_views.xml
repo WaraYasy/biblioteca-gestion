@@ -1,65 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
+        <!-- =====================================================================
+             VISTAS PARA EL MODELO libro.libro
+             =====================================================================
+             Define todas las vistas (tree, form, kanban, search) para gestionar
+             los libros de la biblioteca. Incluye filtros avanzados, agrupaciones
+             y vista kanban con indicadores visuales de disponibilidad.
+             ===================================================================== -->
 
-        <!-- ===================== -->
-        <!-- VISTA ÁRBOL (TREE)    -->
-        <!-- ===================== -->
+        <!-- VISTA ÁRBOL (TREE) - Lista de libros en formato tabla -->
+        <!-- Muestra columnas: título, autor, ISBN, género, editorial, categoría, valoración y disponibilidad -->
         <record id="view_libro_tree" model="ir.ui.view">
             <field name="name">libro.libro.tree</field>
             <field name="model">libro.libro</field>
             <field name="arch" type="xml">
                 <tree>
+                    <!-- Título del libro -->
                     <field name="titulo"/>
+                    <!-- Autor del libro -->
                     <field name="autor_id"/>
+                    <!-- Código ISBN de 13 dígitos -->
                     <field name="isbn"/>
+                    <!-- Género literario -->
                     <field name="genero"/>
+                    <!-- Editorial que publicó el libro -->
                     <field name="editorial"/>
+                    <!-- Categoría/zona de la biblioteca -->
                     <field name="categoria_id"/>
+                    <!-- Valoración (0-10) con barra de progreso visual -->
                     <field name="valoracion" widget="progressbar"/>
+                    <!-- Disponibilidad: True/False para préstamo -->
                     <field name="disponible"/>
                 </tree>
             </field>
         </record>
 
-        <!-- ===================== -->
-        <!-- VISTA FORMULARIO      -->
-        <!-- ===================== -->
+        <!-- VISTA FORMULARIO - Edición detallada de un libro -->
         <record id="view_libro_form" model="ir.ui.view">
             <field name="name">libro.libro.form</field>
             <field name="model">libro.libro</field>
             <field name="arch" type="xml">
                 <form string="Libro">
                     <sheet>
+                        <!-- Encabezado: título y autor destacados -->
                         <div class="oe_title">
                             <h1>
+                                <!-- Título del libro (campo obligatorio) -->
                                 <field name="titulo" placeholder="Título del libro"/>
                             </h1>
                             <h3>
+                                <!-- Autor del libro (requerido, sin crear nuevos) -->
                                 <field name="autor_id" placeholder="Autor" options="{'no_create': True}"/>
                             </h3>
                         </div>
+                        <!-- Sección: Información General del Libro -->
                         <group>
+                            <!-- Detalles básicos del libro -->
                             <group string="Información General">
+                                <!-- ISBN de 13 dígitos (único) -->
                                 <field name="isbn"/>
+                                <!-- Editorial que publicó el libro -->
                                 <field name="editorial"/>
+                                <!-- Fecha de publicación -->
                                 <field name="fecha_publicacion"/>
+                                <!-- Número total de páginas -->
                                 <field name="paginas"/>
                             </group>
+                            <!-- Clasificación del libro -->
                             <group string="Clasificación">
+                                <!-- Género literario (selección) -->
+                                <!-- Género literario (selección) -->
                                 <field name="genero"/>
+                                <!-- Categoría/zona de la biblioteca -->
                                 <field name="categoria_id"/>
+                                <!-- Disponible para préstamo (checkbox) -->
                                 <field name="disponible"/>
                             </group>
                         </group>
+                        <!-- Sección: Valoración del Libro -->
                         <group>
+                            <!-- Puntuación y nivel de valoración -->
                             <group string="Valoración">
+                                <!-- Puntuación de 0 a 10 con barra de progreso -->
                                 <field name="valoracion" widget="progressbar"/>
+                                <!-- Nivel calculado automáticamente (Baja, Regular, Buena, etc.) -->
                                 <field name="nivel_valoracion"/>
                             </group>
                         </group>
+                        <!-- Pestaña: Sinopsis/Resumen -->
                         <notebook>
                             <page string="Sinopsis">
+                                <!-- Descripción/resumen del contenido del libro -->
                                 <field name="sinopsis" placeholder="Resumen del libro..."/>
                             </page>
                         </notebook>
@@ -68,43 +100,51 @@
             </field>
         </record>
 
-        <!-- ===================== -->
-        <!-- VISTA KANBAN          -->
-        <!-- ===================== -->
+        <!-- VISTA KANBAN - Tarjetas visuales de libros -->
+        <!-- Muestra libros como tarjetas con indicador visual de disponibilidad -->
         <record id="view_libro_kanban" model="ir.ui.view">
             <field name="name">libro.libro.kanban</field>
             <field name="model">libro.libro</field>
             <field name="arch" type="xml">
                 <kanban class="o_kanban_small_column">
+                    <!-- Campos necesarios para la vista kanban -->
                     <field name="titulo"/>
                     <field name="autor_id"/>
                     <field name="disponible"/>
+                    <!-- Plantilla para cada tarjeta de libro -->
                     <templates>
                         <t t-name="kanban-box">
+                            <!-- Tarjeta del libro con borde coloreado según disponibilidad -->
                             <div t-attf-class="oe_kanban_card oe_kanban_global_click #{record.disponible.raw_value ? 'border-start border-success border-4' : 'border-start border-danger border-4'}"
                                  style="min-height: 180px;">
                                 <div class="oe_kanban_content d-flex flex-column h-100">
-                                    <!-- Portada placeholder -->
+                                    <!-- Ícono de portada (placeholder para portada) -->
+                                    <!-- Fondo verde si está disponible, rojo si no -->
                                     <div class="text-center py-3"
                                          t-attf-style="background-color: #{record.disponible.raw_value ? '#d4edda' : '#f8d7da'};">
+                                        <!-- Ícono de libro (color según disponibilidad) -->
                                         <i class="fa fa-book fa-4x"
                                            t-attf-style="color: #{record.disponible.raw_value ? '#28a745' : '#dc3545'};"/>
                                     </div>
-                                    <!-- Información del libro -->
+                                    <!-- Información del libro (título y autor) -->
                                     <div class="p-2 flex-grow-1">
+                                        <!-- Título del libro (máx 1 línea) -->
                                         <div class="o_kanban_record_title fw-bold text-truncate">
                                             <field name="titulo"/>
                                         </div>
+                                        <!-- Autor del libro (subtítulo) -->
                                         <div class="text-muted small">
                                             <i class="fa fa-user"/> <field name="autor_id"/>
                                         </div>
                                     </div>
-                                    <!-- Estado -->
+                                    <!-- Estado de disponibilidad del libro -->
                                     <div class="p-2 text-center">
+                                        <!-- Badge verde si disponible -->
                                         <span t-if="record.disponible.raw_value"
                                               class="badge bg-success w-100">
                                             <i class="fa fa-check"/> Disponible
                                         </span>
+                                        <!-- Badge rojo si no disponible -->
                                         <span t-else=""
                                               class="badge bg-danger w-100">
                                             <i class="fa fa-times"/> No disponible
@@ -118,57 +158,67 @@
             </field>
         </record>
 
-        <!-- ===================== -->
-        <!-- VISTA BÚSQUEDA        -->
-        <!-- ===================== -->
+        <!-- VISTA BÚSQUEDA - Filtros y búsquedas de libros -->
+        <!-- Define campos de búsqueda, filtros personalizados y agrupaciones -->
         <record id="view_libro_search" model="ir.ui.view">
             <field name="name">libro.libro.search</field>
             <field name="model">libro.libro</field>
             <field name="arch" type="xml">
                 <search string="Buscar Libros">
-                    <!-- Campos de búsqueda -->
+                    <!-- CAMPOS DE BÚSQUEDA -->
+                    <!-- Estos campos permiten búsqueda de texto -->
                     <field name="titulo"/>
                     <field name="autor_id"/>
                     <field name="isbn"/>
                     <field name="genero"/>
                     <field name="editorial"/>
 
-                    <!-- Filtros personalizados -->
+                    <!-- FILTROS PERSONALIZADOS -->
+                    <!-- Filtro: Libros disponibles para préstamo -->
                     <filter string="Libros Disponibles"
                             name="filter_disponibles"
                             domain="[('disponible', '=', True)]"
                             icon="fa-check-circle"/>
 
+                    <!-- Filtro: Libros destacados (valoración > 9.0) -->
                     <filter string="Libros Destacados"
                             name="filter_destacados"
                             domain="[('valoracion', '>', 9.0)]"
                             icon="fa-star"/>
 
+                    <!-- Filtro: Libros no disponibles para préstamo -->
                     <filter string="No Disponibles"
                             name="filter_no_disponibles"
                             domain="[('disponible', '=', False)]"
                             icon="fa-times-circle"/>
 
+                    <!-- Separador antes de los agrupadores -->
                     <separator/>
 
-                    <!-- Agrupar por -->
+                    <!-- AGRUPACIONES PERSONALIZADAS -->
                     <group expand="0" string="Agrupar por">
+                        <!-- Agrupar por autor -->
                         <filter string="Autor" name="group_autor" context="{'group_by': 'autor_id'}"/>
+                        <!-- Agrupar por género -->
                         <filter string="Género" name="group_genero" context="{'group_by': 'genero'}"/>
+                        <!-- Agrupar por zona/categoría de la biblioteca -->
                         <filter string="Zona" name="group_zona" context="{'group_by': 'categoria_id'}"/>
+                        <!-- Agrupar por disponibilidad -->
                         <filter string="Disponibilidad" name="group_disponible" context="{'group_by': 'disponible'}"/>
                     </group>
                 </search>
             </field>
         </record>
 
-        <!-- ===================== -->
-        <!-- ACCIÓN                -->
-        <!-- ===================== -->
+        <!-- ACCIÓN DE VENTANA - Abre las vistas de libros -->
+        <!-- Esta acción se ejecuta cuando se hace clic en el menú Libros -->
         <record id="action_libro" model="ir.actions.act_window">
             <field name="name">Libros</field>
+            <!-- Modelo que gestiona esta acción -->
             <field name="res_model">libro.libro</field>
+            <!-- Modos de vista disponibles: lista, kanban y formulario -->
             <field name="view_mode">tree,kanban,form</field>
+            <!-- Mensaje de ayuda para usuarios sin libros registrados -->
             <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">
                     Añade tu primer libro
@@ -179,10 +229,9 @@
             </field>
         </record>
 
-        <!-- ===================== -->
-        <!-- MENÚ                  -->
-        <!-- ===================== -->
-        <!-- Menú Libros (directo bajo el raíz) -->
+        <!-- MENÚ DE LIBROS -->
+        <!-- Menú principal: Libros (directo bajo el raíz de la biblioteca) -->
+        <!-- Sequence: 10 para posicionarlo primero en la estructura de menú -->
         <menuitem id="menu_libro"
                   name="Libros"
                   parent="menu_biblioteca_root"

@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        <!-- =====================================================
+        <!-- =====================================================================
              VISTAS PARA EL MODELO libro.autor
-             ===================================================== -->
+             =====================================================================
+             Define todas las vistas para gestionar los autores de la biblioteca:
+             - Vista Árbol (Tree): Lista de autores
+             - Vista Formulario (Form): Edición detallada de un autor
+             - Vista Kanban: Tarjetas visuales de autores
+             - Acción y Menú: Integración con el menú de Odoo
+             ===================================================================== -->
 
-        <!-- Vista Tree (Lista) de Autores -->
-        <!-- Muestra los autores en formato tabla -->
+        <!-- VISTA ÁRBOL (TREE) - Lista de autores en formato tabla -->
+        <!-- Muestra columnas: nombre, fecha de nacimiento y nacionalidad -->
         <record id="view_autor_tree" model="ir.ui.view">
             <field name="name">libro.autor.tree</field>
             <field name="model">libro.autor</field>
@@ -14,43 +20,45 @@
                 <tree string="Autores">
                     <!-- Nombre completo del autor -->
                     <field name="nombre_y_apellidos"/>
-                    <!-- Fecha de nacimiento -->
+                    <!-- Fecha de nacimiento del autor -->
                     <field name="fecha_nacimiento"/>
-                    <!-- País de origen -->
+                    <!-- País de origen del autor -->
                     <field name="nacionalidad"/>
                 </tree>
             </field>
         </record>
 
-        <!-- Vista Form (Formulario) de Autores -->
-        <!-- Formulario completo para crear/editar un autor -->
+        <!-- VISTA FORMULARIO - Edición detallada de un autor -->
         <record id="view_autor_form" model="ir.ui.view">
             <field name="name">libro.autor.form</field>
             <field name="model">libro.autor</field>
             <field name="arch" type="xml">
                 <form string="Autor">
                     <sheet>
+                        <!-- Sección: Datos personales del autor -->
                         <group>
-                            <!-- Datos personales del autor -->
+                            <!-- Información básica (obligatoria) -->
                             <group string="Datos Personales">
-                                <!-- Nombre y apellidos (obligatorio) -->
+                                <!-- Nombre y apellidos del autor -->
                                 <field name="nombre_y_apellidos"/>
-                                <!-- Fecha de nacimiento (obligatorio) -->
+                                <!-- Fecha de nacimiento del autor -->
                                 <field name="fecha_nacimiento"/>
-                                <!-- Nacionalidad -->
+                                <!-- País de origen del autor -->
                                 <field name="nacionalidad"/>
                             </group>
                         </group>
+                        <!-- Sección: Biografía del autor -->
                         <group>
-                            <!-- Biografía del autor -->
+                            <!-- Descripción extendida del autor -->
                             <group string="Biografía">
                                 <field name="biografia" nolabel="1" placeholder="Escribe aquí la biografía del autor..."/>
                             </group>
                         </group>
-                        <!-- Pestaña con los libros del autor -->
+                        <!-- Pestañas adicionales -->
                         <notebook>
+                            <!-- Pestaña: Lista de libros escritos por este autor -->
                             <page string="Libros" name="libros">
-                                <!-- Lista de libros escritos por este autor -->
+                                <!-- Vista árbol embedida con los libros del autor -->
                                 <field name="lista_libros">
                                     <tree>
                                         <field name="titulo"/>
@@ -66,27 +74,28 @@
             </field>
         </record>
 
-        <!-- Vista Kanban de Autores -->
-        <!-- Muestra los autores en tarjetas -->
+        <!-- VISTA KANBAN - Tarjetas visuales de autores -->
         <record id="view_autor_kanban" model="ir.ui.view">
             <field name="name">libro.autor.kanban</field>
             <field name="model">libro.autor</field>
             <field name="arch" type="xml">
                 <kanban class="o_kanban_mobile">
-                    <!-- Campos necesarios para la vista -->
+                    <!-- Campos que se cargan para la vista kanban -->
                     <field name="nombre_y_apellidos"/>
                     <field name="fecha_nacimiento"/>
                     <field name="nacionalidad"/>
                     <field name="lista_libros"/>
+                    <!-- Plantilla para cada tarjeta de autor -->
                     <templates>
                         <t t-name="kanban-box">
+                            <!-- Tarjeta interactiva del autor -->
                             <div class="oe_kanban_global_click oe_kanban_card">
                                 <div class="oe_kanban_content">
-                                    <!-- Nombre del autor -->
+                                    <!-- Nombre del autor (título de la tarjeta) -->
                                     <div class="o_kanban_record_title">
                                         <strong><field name="nombre_y_apellidos"/></strong>
                                     </div>
-                                    <!-- Nacionalidad -->
+                                    <!-- Nacionalidad (subtítulo) -->
                                     <div class="o_kanban_record_subtitle">
                                         <field name="nacionalidad"/>
                                     </div>
@@ -102,16 +111,18 @@
             </field>
         </record>
 
-        <!-- =====================================================
+        <!-- =====================================================================
              ACCIÓN DE VENTANA PARA AUTORES
              ===================================================== -->
 
-        <!-- Acción que abre las vistas de autores -->
+        <!-- Acción que abre las vistas de autores en el menú -->
         <record id="action_autor" model="ir.actions.act_window">
             <field name="name">Autores</field>
+            <!-- Modelo que gestiona esta acción -->
             <field name="res_model">libro.autor</field>
             <!-- Modos de vista disponibles: lista, kanban y formulario -->
             <field name="view_mode">tree,kanban,form</field>
+            <!-- Mensaje de ayuda para usuarios sin autores registrados -->
             <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">
                     Crear el primer autor
@@ -122,11 +133,12 @@
             </field>
         </record>
 
-        <!-- =====================================================
+        <!-- =====================================================================
              MENÚS PARA AUTORES
              ===================================================== -->
 
-        <!-- Menú Autores (directo bajo el raíz) -->
+        <!-- Menú principal: Autores (directo bajo el raíz de la biblioteca) -->
+        <!-- Sequence: 20 para posicionarlo después de Libros (10) -->
         <menuitem
             id="menu_autor"
             name="Autores"

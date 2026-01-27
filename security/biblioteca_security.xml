@@ -1,16 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- Categoría para agrupar los grupos de la biblioteca -->
+    <!-- =====================================================================
+         DEFINICIÓN DE GRUPOS Y PERMISOS DE SEGURIDAD
+         =====================================================================
+         Este archivo configura los niveles de acceso y permisos para los
+         usuarios del módulo de biblioteca. Define dos grupos principales:
+         - Usuarios: acceso limitado a lectura y solicitud de préstamos
+         - Administración: control total del módulo
+         ===================================================================== -->
+
+    <!-- CATEGORÍA DE MÓDULO: Agrupa todos los grupos de la biblioteca -->
+    <!-- Esto organiza los grupos en la interfaz de administración de Odoo -->
     <record id="module_category_biblioteca" model="ir.module.category">
         <field name="name">Biblioteca</field>
         <field name="description">Gestión de biblioteca: libros, autores, préstamos y categorías</field>
         <field name="sequence">10</field>
     </record>
 
-    <!-- Grupo Biblioteca - Usuarios (permisos básicos/limitados) -->
+    <!-- GRUPO: Usuarios de Biblioteca (permisos básicos/limitados) -->
+    <!-- Usuarios normales con acceso limitado a la biblioteca -->
     <record id="group_biblioteca_usuario" model="res.groups">
         <field name="name">Usuarios</field>
         <field name="category_id" ref="module_category_biblioteca"/>
+        <!-- Descripción de los permisos de este grupo -->
         <field name="comment">
             Acceso limitado:
             - Solo lectura en catálogo de libros, autores y categorías
@@ -19,11 +31,15 @@
         </field>
     </record>
 
-    <!-- Grupo Biblioteca - Administración (control total) -->
+    <!-- GRUPO: Administración de Biblioteca (control total) -->
+    <!-- Administradores con permisos completos sobre todos los elementos -->
+    <!-- implied_ids: Este grupo hereda todos los permisos del grupo Usuarios -->
     <record id="group_biblioteca_admin" model="res.groups">
         <field name="name">Administración</field>
         <field name="category_id" ref="module_category_biblioteca"/>
+        <!-- El grupo Admin hereda los permisos del grupo Usuario -->
         <field name="implied_ids" eval="[(4, ref('group_biblioteca_usuario'))]"/>
+        <!-- Descripción de los permisos de este grupo -->
         <field name="comment">
             Control total:
             - CRUD completo sobre todos los objetos del módulo
@@ -32,24 +48,34 @@
         </field>
     </record>
 
-    <!-- Regla de registro: Usuarios solo ven sus propios préstamos -->
+    <!-- REGLA DE ACCESO: Usuarios solo ven sus propios préstamos -->
+    <!-- Esta regla restringe el acceso a los préstamos de cada usuario -->
     <record id="prestamo_rule_usuario_own" model="ir.rule">
         <field name="name">Préstamos: usuarios solo ven los propios</field>
+        <!-- Aplica a los registros del modelo libro.prestamo -->
         <field name="model_id" ref="model_libro_prestamo"/>
+        <!-- Dominio: solo ver préstamos donde usuario_id coincide con el usuario actual -->
         <field name="domain_force">[('usuario_id', '=', user.partner_id.id)]</field>
+        <!-- Grupo al que se aplica esta regla -->
         <field name="groups" eval="[(4, ref('group_biblioteca_usuario'))]"/>
+        <!-- Permisos: lectura permitida, escritura/eliminar no permitida -->
         <field name="perm_read" eval="True"/>
         <field name="perm_write" eval="False"/>
         <field name="perm_create" eval="True"/>
         <field name="perm_unlink" eval="False"/>
     </record>
 
-    <!-- Regla de registro: Administradores ven todos los préstamos -->
+    <!-- REGLA DE ACCESO: Administradores ven todos los préstamos -->
+    <!-- Los administradores tienen acceso sin restricciones a todos los préstamos -->
     <record id="prestamo_rule_admin_all" model="ir.rule">
         <field name="name">Préstamos: administradores ven todos</field>
+        <!-- Aplica a los registros del modelo libro.prestamo -->
         <field name="model_id" ref="model_libro_prestamo"/>
+        <!-- Dominio: (1='1') siempre verdadero - sin restricciones -->
         <field name="domain_force">[(1, '=', 1)]</field>
+        <!-- Grupo al que se aplica esta regla -->
         <field name="groups" eval="[(4, ref('group_biblioteca_admin'))]"/>
+        <!-- Permisos: acceso completo (CRUD) -->
         <field name="perm_read" eval="True"/>
         <field name="perm_write" eval="True"/>
         <field name="perm_create" eval="True"/>
