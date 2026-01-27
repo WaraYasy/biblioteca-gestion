@@ -4,6 +4,6 @@ access_libro_libro_usuario,libro.libro.usuario,model_libro_libro,group_bibliotec
 access_libro_autor_admin,libro.autor.admin,model_libro_autor,group_biblioteca_admin,1,1,1,1
 access_libro_autor_usuario,libro.autor.usuario,model_libro_autor,group_biblioteca_usuario,1,0,0,0
 access_libro_prestamo_admin,libro.prestamo.admin,model_libro_prestamo,group_biblioteca_admin,1,1,1,1
-access_libro_prestamo_usuario,libro.prestamo.usuario,model_libro_prestamo,group_biblioteca_usuario,1,1,1,0
+access_libro_prestamo_usuario,libro.prestamo.usuario,model_libro_prestamo,group_biblioteca_usuario,1,0,1,0
 access_libro_categoria_admin,libro.categoria.admin,model_libro_categoria,group_biblioteca_admin,1,1,1,1
 access_libro_categoria_usuario,libro.categoria.usuario,model_libro_categoria,group_biblioteca_usuario,1,0,0,0

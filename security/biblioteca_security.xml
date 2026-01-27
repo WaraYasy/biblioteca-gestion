@@ -39,7 +39,7 @@
         <field name="domain_force">[('usuario_id', '=', user.partner_id.id)]</field>
         <field name="groups" eval="[(4, ref('group_biblioteca_usuario'))]"/>
         <field name="perm_read" eval="True"/>
-        <field name="perm_write" eval="True"/>
+        <field name="perm_write" eval="False"/>
         <field name="perm_create" eval="True"/>
         <field name="perm_unlink" eval="False"/>
     </record>
