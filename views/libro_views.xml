@@ -49,6 +49,7 @@
                             <group string="Clasificación">
                                 <field name="genero"/>
                                 <field name="categoria_id"/>
+                                <field name="disponible"/>
                             </group>
                         </group>
                         <group>
