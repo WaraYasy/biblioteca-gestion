@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- =====================================================
+             DASHBOARD DE ESTADÍSTICAS DE LA BIBLIOTECA
+             Vistas gráficas y pivot para análisis de datos
+             ===================================================== -->
+
+        <!-- ===================== -->
+        <!-- GRÁFICO: PRÉSTAMOS POR ESTADO -->
+        <!-- ===================== -->
+        <record id="view_prestamo_graph_estado" model="ir.ui.view">
+            <field name="name">libro.prestamo.graph.estado</field>
+            <field name="model">libro.prestamo</field>
+            <field name="arch" type="xml">
+                <graph string="Préstamos por Estado" type="pie">
+                    <field name="estado" type="row"/>
+                </graph>
+            </field>
+        </record>
+
+        <!-- ===================== -->
+        <!-- GRÁFICO: PRÉSTAMOS POR MES -->
+        <!-- ===================== -->
+        <record id="view_prestamo_graph_mes" model="ir.ui.view">
+            <field name="name">libro.prestamo.graph.mes</field>
+            <field name="model">libro.prestamo</field>
+            <field name="arch" type="xml">
+                <graph string="Préstamos por Mes" type="bar">
+                    <field name="fecha_prestamo" interval="month" type="row"/>
+                    <field name="id" type="measure"/>
+                </graph>
+            </field>
+        </record>
+
+        <!-- ===================== -->
+        <!-- GRÁFICO: LIBROS POR GÉNERO -->
+        <!-- ===================== -->
+        <record id="view_libro_graph_genero" model="ir.ui.view">
+            <field name="name">libro.libro.graph.genero</field>
+            <field name="model">libro.libro</field>
+            <field name="arch" type="xml">
+                <graph string="Libros por Género" type="pie">
+                    <field name="genero" type="row"/>
+                </graph>
+            </field>
+        </record>
+
+        <!-- ===================== -->
+        <!-- GRÁFICO: LIBROS POR VALORACIÓN -->
+        <!-- ===================== -->
+        <record id="view_libro_graph_valoracion" model="ir.ui.view">
+            <field name="name">libro.libro.graph.valoracion</field>
+            <field name="model">libro.libro</field>
+            <field name="arch" type="xml">
+                <graph string="Libros por Nivel de Valoración" type="pie">
+                    <field name="nivel_valoracion" type="row"/>
+                </graph>
+            </field>
+        </record>
+
+        <!-- ===================== -->
+        <!-- GRÁFICO: PRÉSTAMOS POR LIBRO (TOP LIBROS) -->
+        <!-- ===================== -->
+        <record id="view_prestamo_graph_libro" model="ir.ui.view">
+            <field name="name">libro.prestamo.graph.libro</field>
+            <field name="model">libro.prestamo</field>
+            <field name="arch" type="xml">
+                <graph string="Libros Más Prestados" type="bar">
+                    <field name="libro_id" type="row"/>
+                    <field name="id" type="measure"/>
+                </graph>
+            </field>
+        </record>
+
+        <!-- ===================== -->
+        <!-- VISTA PIVOT: ANÁLISIS DE PRÉSTAMOS -->
+        <!-- ===================== -->
+        <record id="view_prestamo_pivot" model="ir.ui.view">
+            <field name="name">libro.prestamo.pivot</field>
+            <field name="model">libro.prestamo</field>
+            <field name="arch" type="xml">
+                <pivot string="Análisis de Préstamos">
+                    <field name="fecha_prestamo" interval="month" type="row"/>
+                    <field name="estado" type="col"/>
+                    <field name="multa" type="measure"/>
+                </pivot>
+            </field>
+        </record>
+
+        <!-- ===================== -->
+        <!-- VISTA PIVOT: ANÁLISIS DE LIBROS -->
+        <!-- ===================== -->
+        <record id="view_libro_pivot" model="ir.ui.view">
+            <field name="name">libro.libro.pivot</field>
+            <field name="model">libro.libro</field>
+            <field name="arch" type="xml">
+                <pivot string="Análisis de Libros">
+                    <field name="genero" type="row"/>
+                    <field name="disponible" type="col"/>
+                    <field name="valoracion" type="measure"/>
+                    <field name="paginas" type="measure"/>
+                </pivot>
+            </field>
+        </record>
+
+        <!-- =====================================================
+             ACCIONES PARA EL DASHBOARD
+             ===================================================== -->
+
+        <!-- Acción: Estadísticas de Préstamos -->
+        <record id="action_dashboard_prestamos" model="ir.actions.act_window">
+            <field name="name">Estadísticas de Préstamos</field>
+            <field name="res_model">libro.prestamo</field>
+            <field name="view_mode">graph,pivot,tree</field>
+            <field name="view_id" ref="view_prestamo_graph_estado"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Dashboard de Préstamos
+                </p>
+                <p>
+                    Visualiza estadísticas de préstamos: por estado, por mes y libros más prestados.
+                </p>
+            </field>
+        </record>
+
+        <!-- Acción: Estadísticas de Libros -->
+        <record id="action_dashboard_libros" model="ir.actions.act_window">
+            <field name="name">Estadísticas de Libros</field>
+            <field name="res_model">libro.libro</field>
+            <field name="view_mode">graph,pivot,tree</field>
+            <field name="view_id" ref="view_libro_graph_genero"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Dashboard de Libros
+                </p>
+                <p>
+                    Visualiza estadísticas del catálogo: distribución por género y valoraciones.
+                </p>
+            </field>
+        </record>
+
+        <!-- Acción: Libros más prestados -->
+        <record id="action_dashboard_top_libros" model="ir.actions.act_window">
+            <field name="name">Libros Más Prestados</field>
+            <field name="res_model">libro.prestamo</field>
+            <field name="view_mode">graph,tree</field>
+            <field name="view_id" ref="view_prestamo_graph_libro"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Top Libros
+                </p>
+                <p>
+                    Ranking de los libros más populares según número de préstamos.
+                </p>
+            </field>
+        </record>
+
+        <!-- =====================================================
+             MENÚS DEL DASHBOARD
+             ===================================================== -->
+
+        <!-- Menú principal: Dashboard -->
+        <menuitem
+            id="menu_biblioteca_dashboard"
+            name="Dashboard"
+            parent="menu_biblioteca_root"
+            sequence="1"/>
+
+        <!-- Submenú: Estadísticas de Préstamos -->
+        <menuitem
+            id="menu_dashboard_prestamos"
+            name="Estadísticas de Préstamos"
+            parent="menu_biblioteca_dashboard"
+            action="action_dashboard_prestamos"
+            sequence="10"/>
+
+        <!-- Submenú: Estadísticas de Libros -->
+        <menuitem
+            id="menu_dashboard_libros"
+            name="Estadísticas de Libros"
+            parent="menu_biblioteca_dashboard"
+            action="action_dashboard_libros"
+            sequence="20"/>
+
+        <!-- Submenú: Libros Más Prestados -->
+        <menuitem
+            id="menu_dashboard_top_libros"
+            name="Libros Más Prestados"
+            parent="menu_biblioteca_dashboard"
+            action="action_dashboard_top_libros"
+            sequence="30"/>
+
+    </data>
+</odoo>

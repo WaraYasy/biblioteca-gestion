@@ -26,6 +26,8 @@ Long description of module's purpose
         'security/ir.model.access.csv',
         # Primero el menú raíz (prestamo_views.xml lo define)
         'views/prestamo_views.xml',
+        # Dashboard de estadísticas (depende del menú raíz)
+        'views/dashboard_views.xml',
         # Luego catálogo (define menu_biblioteca_catalogo)
         'views/categoria_views.xml',
         # Después los que dependen de catálogo
