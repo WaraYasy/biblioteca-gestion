@@ -1,4 +1,9 @@
 # -*- coding: utf-8 -*-
+"""
+Módulo de préstamos para la gestión de biblioteca en Odoo.
+Define el modelo Préstamo que gestiona los préstamos de libros,
+validaciones de fechas y control de disponibilidad de libros.
+"""
 
 from odoo import models, fields, api
 from odoo.exceptions import ValidationError
@@ -8,11 +13,17 @@ class Prestamo(models.Model):
     """
     Modelo para gestionar los préstamos de libros.
     Registra qué libro fue prestado, a quién y el estado del préstamo.
+    Incluye validaciones para garantizar integridad de datos.
+    
+    Attributes:
+        _name (str): Identificador del modelo (libro.prestamo)
+        _description (str): Descripción del modelo
     """
     _name = 'libro.prestamo'
     _description = 'Préstamo de libro'
 
     # --- Relación con el libro prestado ---
+    # Many2one: Muchos préstamos pueden referirse al mismo libro
     libro_id = fields.Many2one(
         comodel_name='libro.libro',
         string='Libro prestado',
@@ -45,6 +56,7 @@ class Prestamo(models.Model):
     )
 
     # --- Estado del préstamo ---
+    # Selection: Campo con valores predefinidos
     estado = fields.Selection(
         selection=[
             ('prestado', 'Prestado'),
@@ -67,7 +79,15 @@ class Prestamo(models.Model):
     # Validación: Fecha de devolución debe ser posterior a fecha de préstamo
     @api.constrains('fecha_prestamo', 'fecha_devolucion')
     def _check_fechas(self):
+        """
+        Valida que la fecha de devolución sea posterior a la fecha de préstamo.
+        Se ejecuta automáticamente cuando se modifican estos campos.
+
+        Raises:
+            ValidationError: Si la fecha de devolución es anterior a la fecha de préstamo
+        """
         for prestamo in self:
+            # Solo validar si ambas fechas están definidas
             if prestamo.fecha_devolucion and prestamo.fecha_prestamo:
                 if prestamo.fecha_devolucion < prestamo.fecha_prestamo:
                     raise ValidationError(
@@ -79,16 +99,24 @@ class Prestamo(models.Model):
     # Validación: No permitir prestar un libro que ya está prestado
     @api.constrains('libro_id', 'estado')
     def _check_libro_ya_prestado(self):
+        """
+        Valida que no haya múltiples préstamos activos del mismo libro.
+        Impide que se preste un libro si ya hay otro préstamo activo.
+
+        Raises:
+            ValidationError: Si el libro ya tiene un préstamo activo
+        """
         for prestamo in self:
-            # Solo validar si el estado es prestado o retrasado (activos)
+            # Solo validar si el estado es prestado o retrasado (préstamos activos)
             if prestamo.estado in ['prestado', 'retrasado']:
-                # Buscar si hay otro préstamo activo del mismo libro
+                # Buscar si hay otro préstamo activo del mismo libro (excluyendo este)
                 otros_prestamos = self.search([
                     ('libro_id', '=', prestamo.libro_id.id),
                     ('estado', 'in', ['prestado', 'retrasado']),
-                    ('id', '!=', prestamo.id)
+                    ('id', '!=', prestamo.id)  # Excluir el préstamo actual
                 ])
 
+                # Si hay otros préstamos activos, lanzar error
                 if otros_prestamos:
                     raise ValidationError(
                         f'El libro "{prestamo.libro_id.titulo}" ya está prestado. '
@@ -98,21 +126,46 @@ class Prestamo(models.Model):
     # Al crear un préstamo, marcar el libro como no disponible
     @api.model_create_multi
     def create(self, vals_list):
+        """
+        Crea nuevos registros de préstamo y actualiza la disponibilidad del libro.
+        Cuando se crea un préstamo con estado 'prestado' o 'retrasado',
+        el libro se marca como no disponible automáticamente.
+
+        Args:
+            vals_list: Lista de diccionarios con los valores para crear los préstamos
+
+        Returns:
+            prestamos: Registros de préstamo creados
+        """
         prestamos = super().create(vals_list)
+        # Para cada préstamo creado, actualizar la disponibilidad del libro
         for prestamo in prestamos:
             if prestamo.estado in ['prestado', 'retrasado']:
+                # Marcar el libro como no disponible
                 prestamo.libro_id.disponible = False
         return prestamos
 
     # Al modificar el estado, actualizar disponibilidad del libro
     def write(self, vals):
+        """
+        Actualiza los registros de préstamo y sincroniza la disponibilidad del libro.
+        Cuando cambia el estado del préstamo, se actualiza automáticamente
+        el estado de disponibilidad del libro asociado.
+
+        Args:
+            vals: Diccionario con los campos a actualizar
+
+        Returns:
+            result: Resultado de la operación de actualización
+        """
         result = super().write(vals)
+        # Si se modifica el estado del préstamo, actualizar disponibilidad del libro
         if 'estado' in vals:
             for prestamo in self:
                 if prestamo.estado == 'devuelto':
-                    # Marcar libro como disponible
+                    # Marcar libro como disponible si fue devuelto
                     prestamo.libro_id.disponible = True
                 elif prestamo.estado in ['prestado', 'retrasado']:
-                    # Marcar libro como no disponible
+                    # Marcar libro como no disponible si está en préstamo
                     prestamo.libro_id.disponible = False
         return result

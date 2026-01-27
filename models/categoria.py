@@ -1,12 +1,21 @@
 # -*- coding: utf-8 -*-
+"""
+Módulo de categorías para la gestión de biblioteca en Odoo.
+Define el modelo Categoría que organiza los libros por secciones
+y proporciona información sobre el número de libros en cada categoría.
+"""
 
-from odoo import models, fields
+from odoo import models, fields, api
 
 
 class Categoria(models.Model):
     """
     Modelo para gestionar las categorías de la biblioteca.
     Permite organizar los libros por categorías o secciones.
+    
+    Attributes:
+        _name (str): Identificador del modelo (libro.categoria)
+        _description (str): Descripción del modelo
     """
     _name = 'libro.categoria'
     _description = 'Categoría de la biblioteca'
@@ -35,6 +44,7 @@ class Categoria(models.Model):
     )
 
     # --- Relación inversa con libros ---
+    # One2many: Una categoría puede tener muchos libros
     libro_ids = fields.One2many(
         comodel_name='libro.libro',
         inverse_name='categoria_id',
@@ -43,6 +53,7 @@ class Categoria(models.Model):
     )
 
     # --- Campo calculado: cantidad de libros ---
+    # Computed field que se actualiza automáticamente
     cantidad_libros = fields.Integer(
         string='Cantidad de libros',
         compute='_compute_cantidad_libros',
@@ -50,5 +61,13 @@ class Categoria(models.Model):
     )
 
     def _compute_cantidad_libros(self):
+        """
+        Calcula la cantidad de libros en cada categoría.
+        Se ejecuta automáticamente cuando cambia la relación 'libro_ids'.
+
+        Returns:
+            None: Asigna el valor calculado al campo 'cantidad_libros' directamente
+        """
         for categoria in self:
+            # Contar la cantidad de libros relacionados con esta categoría
             categoria.cantidad_libros = len(categoria.libro_ids)

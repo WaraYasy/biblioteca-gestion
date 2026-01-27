@@ -3,8 +3,14 @@
     <data>
         <!-- =====================================================
              VISTAS PARA EL MODELO libro.prestamo
-             ===================================================== -->
+             =====================================================================
+             Define todas las vistas (tree, form, kanban, search) para gestionar
+             los préstamos de libros. Incluye validaciones, filtros por estado
+             y vista kanban con indicadores de color según el estado del préstamo.
+             ===================================================================== -->
 
+        <!-- VISTA ÁRBOL (TREE) - Lista de préstamos en formato tabla -->
+        <!-- Muestra columnas: libro, usuario, fechas, estado y multa -->
         <!-- Vista Tree (Lista) de Préstamos -->
         <!-- Muestra los préstamos en formato tabla con las columnas principales -->
         <record id="view_prestamo_tree" model="ir.ui.view">
@@ -21,6 +27,7 @@
                     <!-- Fecha de devolución (puede estar vacía si no se ha devuelto) -->
                     <field name="fecha_devolucion"/>
                     <!-- Estado actual del préstamo con colores según el estado -->
+                    <!-- Rojo para retrasado/perdido, verde para devuelto, amarillo para prestado -->
                     <field name="estado" decoration-danger="estado == 'retrasado' or estado == 'perdido'" decoration-success="estado == 'devuelto'" decoration-warning="estado == 'prestado'" widget="badge"/>
                     <!-- Multa por retraso (si aplica) -->
                     <field name="multa"/>
@@ -28,22 +35,24 @@
             </field>
         </record>
 
-        <!-- Vista Form (Formulario) de Préstamos -->
-        <!-- Formulario completo para crear/editar un préstamo -->
+        <!-- VISTA FORMULARIO - Edición detallada de un préstamo -->
         <record id="view_prestamo_form" model="ir.ui.view">
             <field name="name">libro.prestamo.form</field>
             <field name="model">libro.prestamo</field>
             <field name="arch" type="xml">
                 <form string="Préstamo">
                     <sheet>
-                        <!-- Cabecera con el estado del préstamo -->
+                        <!-- Sección 1: Información del Préstamo (libro y usuario) -->
                         <group>
+                            <!-- Información básica del préstamo -->
                             <group string="Información del Préstamo">
                                 <!-- Libro que se presta (obligatorio, solo disponibles) -->
+                                <!-- Domain: solo muestra libros disponibles para préstamo -->
                                 <field name="libro_id" domain="[('disponible', '=', True)]"/>
                                 <!-- Usuario que solicita el préstamo (obligatorio) -->
                                 <field name="usuario_id"/>
                             </group>
+                            <!-- Sección 2: Fechas del Préstamo -->
                             <group string="Fechas">
                                 <!-- Fecha en que se realiza el préstamo (obligatorio) -->
                                 <field name="fecha_prestamo"/>
@@ -51,9 +60,11 @@
                                 <field name="fecha_devolucion"/>
                             </group>
                         </group>
+                        <!-- Sección 3: Estado y Multa -->
                         <group>
+                            <!-- Estado y costo adicional por retraso -->
                             <group string="Estado y Multa">
-                                <!-- Estado actual del préstamo -->
+                                <!-- Estado actual del préstamo (prestado/devuelto/retrasado/perdido) -->
                                 <field name="estado"/>
                                 <!-- Multa por retraso en la devolución -->
                                 <field name="multa"/>
@@ -64,23 +75,25 @@
             </field>
         </record>
 
-        <!-- Vista Kanban de Préstamos -->
-        <!-- Muestra los préstamos en tarjetas con colores según el estado -->
+        <!-- VISTA KANBAN - Tarjetas visuales de préstamos -->
+        <!-- Muestra préstamos como tarjetas con colores según el estado -->
         <record id="view_prestamo_kanban" model="ir.ui.view">
             <field name="name">libro.prestamo.kanban</field>
             <field name="model">libro.prestamo</field>
             <field name="arch" type="xml">
                 <kanban class="o_kanban_mobile">
-                    <!-- Campos necesarios para la vista -->
+                    <!-- Campos necesarios para la vista kanban -->
                     <field name="libro_id"/>
                     <field name="usuario_id"/>
                     <field name="fecha_prestamo"/>
                     <field name="fecha_devolucion"/>
                     <field name="estado"/>
                     <field name="multa"/>
+                    <!-- Plantilla para cada tarjeta de préstamo -->
                     <templates>
                         <t t-name="kanban-box">
-                            <!-- Color de la tarjeta según el estado -->
+                            <!-- Tarjeta del préstamo con color según el estado -->
+                            <!-- Rojo: retrasado/perdido, Verde: devuelto, Amarillo: prestado, Gris: otro -->
                             <div t-attf-class="oe_kanban_global_click oe_kanban_card #{record.estado.raw_value == 'retrasado' ? 'bg-danger' : record.estado.raw_value == 'devuelto' ? 'bg-success' : record.estado.raw_value == 'perdido' ? 'bg-dark' : 'bg-warning'}">
                                 <div class="oe_kanban_content">
                                     <!-- Título: nombre del libro -->
@@ -101,6 +114,7 @@
                                     <!-- Estado y multa -->
                                     <div class="mt-2">
                                         <span class="badge"><field name="estado"/></span>
+                                        <!-- Mostrar multa si existe -->
                                         <t t-if="record.multa.raw_value > 0">
                                             <span class="badge bg-danger ms-1">Multa: <field name="multa"/>€</span>
                                         </t>
@@ -113,67 +127,78 @@
             </field>
         </record>
 
-        <!-- =====================================================
-             VISTA DE BÚSQUEDA PARA PRÉSTAMOS
-             ===================================================== -->
+        <!-- Vista Búsqueda y Filtros de Préstamos -->
+        <!-- Define campos de búsqueda, filtros personalizados y agrupaciones -->
         <record id="view_prestamo_search" model="ir.ui.view">
             <field name="name">libro.prestamo.search</field>
             <field name="model">libro.prestamo</field>
             <field name="arch" type="xml">
                 <search string="Buscar Préstamos">
-                    <!-- Campos de búsqueda -->
+                    <!-- Campos que se pueden buscar -->
                     <field name="libro_id"/>
                     <field name="usuario_id"/>
 
-                    <!-- Filtros personalizados -->
+                    <!-- FILTROS PERSONALIZADOS POR ESTADO -->
+                    <!-- Filtro: Préstamos activos (en proceso) -->
                     <filter string="Préstamos Activos"
                             name="filter_activos"
                             domain="[('estado', '=', 'prestado')]"
                             icon="fa-book"/>
 
+                    <!-- Filtro: Devoluciones cercanas (próximos 3 días) -->
                     <filter string="Próximas Devoluciones (3 días)"
                             name="filter_proximas"
                             domain="[('estado', '=', 'prestado'), ('fecha_devolucion', '&lt;=', (context_today() + relativedelta(days=3)).strftime('%Y-%m-%d')), ('fecha_devolucion', '&gt;=', context_today().strftime('%Y-%m-%d'))]"
                             icon="fa-clock-o"/>
 
+                    <!-- Filtro: Préstamos vencidos/retrasados -->
                     <filter string="Préstamos Vencidos"
                             name="filter_vencidos"
                             domain="[('estado', '=', 'retrasado')]"
                             icon="fa-exclamation-triangle"/>
 
+                    <!-- Filtro: Préstamos ya devueltos -->
                     <filter string="Devueltos"
                             name="filter_devueltos"
                             domain="[('estado', '=', 'devuelto')]"
                             icon="fa-check"/>
 
+                    <!-- Filtro: Libros perdidos -->
                     <filter string="Perdidos"
                             name="filter_perdidos"
                             domain="[('estado', '=', 'perdido')]"
                             icon="fa-times"/>
 
+                    <!-- Separador antes de los agrupadores -->
                     <separator/>
 
-                    <!-- Agrupar por -->
+                    <!-- AGRUPACIONES PERSONALIZADAS -->
                     <group expand="0" string="Agrupar por">
+                        <!-- Agrupar por estado del préstamo -->
                         <filter string="Estado" name="group_estado" context="{'group_by': 'estado'}"/>
+                        <!-- Agrupar por usuario que solicita -->
                         <filter string="Usuario" name="group_usuario" context="{'group_by': 'usuario_id'}"/>
+                        <!-- Agrupar por libro prestado -->
                         <filter string="Libro" name="group_libro" context="{'group_by': 'libro_id'}"/>
+                        <!-- Agrupar por fecha de préstamo -->
                         <filter string="Fecha Préstamo" name="group_fecha" context="{'group_by': 'fecha_prestamo'}"/>
                     </group>
                 </search>
             </field>
         </record>
 
-        <!-- =====================================================
+        <!-- =====================================================================
              ACCIÓN DE VENTANA PARA PRÉSTAMOS
              ===================================================== -->
 
-        <!-- Acción que abre las vistas de préstamos -->
+        <!-- Acción que abre las vistas de préstamos en el menú -->
         <record id="action_prestamo" model="ir.actions.act_window">
             <field name="name">Préstamos</field>
+            <!-- Modelo que gestiona esta acción -->
             <field name="res_model">libro.prestamo</field>
             <!-- Modos de vista disponibles: lista, kanban y formulario -->
             <field name="view_mode">tree,kanban,form</field>
+            <!-- Mensaje de ayuda para usuarios sin préstamos registrados -->
             <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">
                     Crear el primer préstamo
@@ -184,17 +209,18 @@
             </field>
         </record>
 
-        <!-- =====================================================
+        <!-- =====================================================================
              MENÚS PARA PRÉSTAMOS
              ===================================================== -->
 
-        <!-- Menú raíz de la Biblioteca -->
+        <!-- Menú raíz de la Biblioteca: punto de entrada principal -->
         <menuitem
             id="menu_biblioteca_root"
             name="Biblioteca Calíope"
             sequence="10"/>
 
-        <!-- Menú Préstamos (directo bajo el raíz) -->
+        <!-- Menú principal: Préstamos (directo bajo el raíz de la biblioteca) -->
+        <!-- Sequence: 30 para posicionarlo después de Libros (10) y Autores (20) -->
         <menuitem
             id="menu_prestamo"
             name="Préstamos"

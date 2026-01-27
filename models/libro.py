@@ -1,4 +1,9 @@
 # -*- coding: utf-8 -*-
+"""
+Módulo de libros para la gestión de biblioteca en Odoo.
+Define el modelo Libro que gestiona la información de los libros,
+su valoración calculada automáticamente y sus relaciones con autores y categorías.
+"""
 
 from odoo import models, fields, api
 
@@ -8,6 +13,11 @@ class Libro(models.Model):
     Modelo para gestionar los libros de la biblioteca.
     Permite registrar información detallada de cada libro incluyendo
     su valoración calculada automáticamente.
+    
+    Attributes:
+        _name (str): Identificador del modelo (libro.libro)
+        _description (str): Descripción del modelo
+        _rec_name (str): Campo usado para mostrar y buscar el libro
     """
     _name = 'libro.libro'
     _description = 'Libro de la biblioteca'
@@ -106,11 +116,15 @@ class Libro(models.Model):
         help='Categoría del libro (ej: Novedades, Clásicos, Infantil)'
     )
 
-    # --- Método computado para calcular el nivel de valoración ---
+    # --- Restricción SQL para validar ISBN único ---
+    _sql_constraints = [
+        ('isbn_unique', 'UNIQUE(isbn)', 'El ISBN debe ser único para cada libro.'),
+    ]
     @api.depends('valoracion')
     def _compute_nivel_valoracion(self):
         """
         Calcula automáticamente el nivel de valoración según la puntuación.
+        Este método se ejecuta cada vez que cambia el campo 'valoracion'.
 
         Rangos de valoración (con margen de +0.5):
         - 0 a 4.9: Baja
@@ -118,10 +132,15 @@ class Libro(models.Model):
         - 7 a 8.4: Buena
         - 8.5 a 9.4: Muy buena
         - 9.5 a 10: Excelente
+
+        Returns:
+            None: Asigna el valor calculado al campo 'nivel_valoracion' directamente
         """
         for libro in self:
+            # Obtener la valoración, o 0 si está vacía
             valoracion = libro.valoracion or 0
 
+            # Clasificar según rangos predefinidos
             if valoracion < 5:
                 libro.nivel_valoracion = 'Baja'
             elif valoracion < 7:
