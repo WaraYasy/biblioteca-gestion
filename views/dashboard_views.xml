@@ -104,6 +104,49 @@
             </field>
         </record>
 
+        <!-- ===================== -->
+        <!-- GRÁFICO: LIBROS POR CATEGORÍA -->
+        <!-- ===================== -->
+        <record id="view_libro_graph_categoria" model="ir.ui.view">
+            <field name="name">libro.libro.graph.categoria</field>
+            <field name="model">libro.libro</field>
+            <field name="arch" type="xml">
+                <graph string="Libros por Categoría" type="pie">
+                    <field name="categoria_id" type="row"/>
+                </graph>
+            </field>
+        </record>
+
+        <!-- ===================== -->
+        <!-- GRÁFICO: VALORACIÓN MEDIA POR CATEGORÍA -->
+        <!-- ===================== -->
+        <record id="view_libro_graph_categoria_valoracion" model="ir.ui.view">
+            <field name="name">libro.libro.graph.categoria.valoracion</field>
+            <field name="model">libro.libro</field>
+            <field name="arch" type="xml">
+                <graph string="Valoración Media por Categoría" type="bar">
+                    <field name="categoria_id" type="row"/>
+                    <field name="valoracion" type="measure"/>
+                </graph>
+            </field>
+        </record>
+
+        <!-- ===================== -->
+        <!-- VISTA PIVOT: ANÁLISIS POR CATEGORÍA -->
+        <!-- ===================== -->
+        <record id="view_libro_pivot_categoria" model="ir.ui.view">
+            <field name="name">libro.libro.pivot.categoria</field>
+            <field name="model">libro.libro</field>
+            <field name="arch" type="xml">
+                <pivot string="Análisis por Categoría">
+                    <field name="categoria_id" type="row"/>
+                    <field name="genero" type="col"/>
+                    <field name="valoracion" type="measure"/>
+                    <field name="paginas" type="measure"/>
+                </pivot>
+            </field>
+        </record>
+
         <!-- =====================================================
              ACCIONES PARA EL DASHBOARD
              ===================================================== -->
@@ -156,6 +199,22 @@
             </field>
         </record>
 
+        <!-- Acción: Estadísticas por Categoría -->
+        <record id="action_dashboard_categorias" model="ir.actions.act_window">
+            <field name="name">Estadísticas por Categoría</field>
+            <field name="res_model">libro.libro</field>
+            <field name="view_mode">graph,pivot,tree</field>
+            <field name="view_id" ref="view_libro_graph_categoria"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Dashboard por Categorías
+                </p>
+                <p>
+                    Visualiza la distribución de libros por categoría, valoración media y análisis detallado.
+                </p>
+            </field>
+        </record>
+
         <!-- =====================================================
              MENÚS DEL DASHBOARD
              ===================================================== -->
@@ -190,6 +249,14 @@
             parent="menu_biblioteca_dashboard"
             action="action_dashboard_top_libros"
             sequence="30"/>
+
+        <!-- Submenú: Estadísticas por Categoría -->
+        <menuitem
+            id="menu_dashboard_categorias"
+            name="Por Categoría"
+            parent="menu_biblioteca_dashboard"
+            action="action_dashboard_categorias"
+            sequence="40"/>
 
     </data>
 </odoo>
