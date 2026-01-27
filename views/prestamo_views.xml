@@ -39,8 +39,8 @@
                         <!-- Cabecera con el estado del préstamo -->
                         <group>
                             <group string="Información del Préstamo">
-                                <!-- Libro que se presta (obligatorio) -->
-                                <field name="libro_id"/>
+                                <!-- Libro que se presta (obligatorio, solo disponibles) -->
+                                <field name="libro_id" domain="[('disponible', '=', True)]"/>
                                 <!-- Usuario que solicita el préstamo (obligatorio) -->
                                 <field name="usuario_id"/>
                             </group>
