@@ -3,6 +3,8 @@
 Módulo de autores para la gestión de biblioteca en Odoo.
 Define el modelo Autor que gestiona la información de los autores
 y su relación con los libros.
+
+Autores: Arantxa, Wara
 """
 
 from odoo import models, fields

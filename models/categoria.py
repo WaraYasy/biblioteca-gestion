@@ -3,6 +3,8 @@
 Módulo de categorías para la gestión de biblioteca en Odoo.
 Define el modelo Categoría que organiza los libros por secciones
 y proporciona información sobre el número de libros en cada categoría.
+
+Autores: Arantxa, Wara
 """
 
 from odoo import models, fields, api

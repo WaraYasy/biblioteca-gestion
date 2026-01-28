@@ -3,6 +3,8 @@
 Módulo de libros para la gestión de biblioteca en Odoo.
 Define el modelo Libro que gestiona la información de los libros,
 su valoración calculada automáticamente y sus relaciones con autores y categorías.
+
+Autores: Arantxa, Wara
 """
 
 from odoo import models, fields, api

@@ -3,6 +3,8 @@
 Módulo de préstamos para la gestión de biblioteca en Odoo.
 Define el modelo Préstamo que gestiona los préstamos de libros,
 validaciones de fechas y control de disponibilidad de libros.
+
+Autores: Arantxa, Wara
 """
 
 from odoo import models, fields, api
