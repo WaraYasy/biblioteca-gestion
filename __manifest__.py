@@ -5,10 +5,10 @@
     'summary': "Short (1 phrase/line) summary of the module's purpose",
 
     'description': """
-Long description of module's purpose
+    Módulo de gestión de la biblioteca Calíope.
     """,
 
-    'author': "My Company",
+    'author': "Arantxa-Wara",
     'website': "https://www.yourcompany.com",
 
     # Categories can be used to filter modules in modules listing
